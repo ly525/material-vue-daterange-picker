@@ -1,0 +1,53 @@
+{
+  "name": "md-date-range-picker",
+  "version": "0.0.1",
+  "description": "A material design daterange picker",
+  "main": "dist/md-date-range-picker.cjs.js",
+  "module": "dist/md-date-range-picker.es.js",
+  "browser": "dist/md-date-range-picker.js",
+  "cdn": "dist/md-date-range-picker.min.js",
+  "unpkg": "dist/md-date-range-picker.min.js",
+  "author": "ly525 <lantern.done@gmail.com>",
+  "repository": "https://github.com/ly525/md-date-range-picker",
+  "files": [
+    "dist",
+    "src",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "dev": "npm run build -- -w & poi demo/index.js",
+    "build:demo": "npm run build && poi build demo/index.js",
+    "deploy": "npm run build:demo && ghpages ly525/md-date-range-picker -p build",
+    "test": "npm run lint",
+    "build": "bili src/index.js",
+    "lint": "eslint --ext js --ext vue src demo",
+    "lint:fix": "npm run lint -- --fix",
+    "format": "prettier {src,demo}/**/*.vue {src,demo}/**/*.js **/*.md **/*.json --write",
+    "prepublish": "npm run build"
+  },
+  "peerDependencies": {
+    "vue": ">2.5.0"
+  },
+  "devDependencies": {
+    "bili": "^2.2.6",
+    "eslint": "^4.17.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-vue": "^4.2.2",
+    "ghpages": "^0.0.10",
+    "husky": "^0.14.3",
+    "lint-staged": "^6.1.0",
+    "node-sass": "^4.9.4",
+    "poi": "^9.6.13",
+    "prettier": "^1.10.2",
+    "rollup-plugin-vue": "^3.0.0",
+    "sass-loader": "^7.1.0",
+    "vue": "^2.5.13",
+    "vue-template-compiler": "^2.5.13"
+  },
+  "dependencies": {
+    "moment": "^2.22.2"
+  }
+}
