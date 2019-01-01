@@ -141,7 +141,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
 td.today {
   font-weight: bold;
 }
