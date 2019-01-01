@@ -1,6 +1,6 @@
 {
   "name": "v-md-date-range-picker",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A material design daterange picker",
   "main": "dist/md-date-range-picker.cjs.js",
   "module": "dist/md-date-range-picker.es.js",
@@ -8,7 +8,7 @@
   "cdn": "dist/md-date-range-picker.min.js",
   "unpkg": "dist/md-date-range-picker.min.js",
   "author": "ly525 <lantern.done@gmail.com>",
-  "repository": "https://github.com/ly525/md-date-range-picker",
+  "repository": "https://github.com/ly525/v-md-date-range-picker",
   "files": [
     "dist",
     "src",
