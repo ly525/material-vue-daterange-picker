@@ -3,12 +3,12 @@
 - Install
 
 ```sh
-npm install md-date-range-picker --save
+npm install v-md-date-range-picker --save
 ```
 
 ```
 <template>
-    <md-date-range-picker></md-date-range-picker>
+  <md-date-range-picker></md-date-range-picker>
 </template>
 ```
 
@@ -16,8 +16,8 @@ npm install md-date-range-picker --save
 
 ```vue
 <script>
-import MdDateRangePicker from "md-date-range-picker";
-import "md-date-range-picker/dist/md-date-range-picker.css";
+import MdDateRangePicker from "v-md-date-range-picker";
+import "v-md-date-range-picker/dist/md-date-range-picker.css";
 
 Vue.use(MdDateRangePicker);
 </script>
