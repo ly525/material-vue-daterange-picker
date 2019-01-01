@@ -1,12 +1,12 @@
 <template>
   <div class="ranges">
-    <ul v-if="ranges">
+    <ul v-if="presets">
       <li
-        v-for="(value, key) in ranges"
-        :key="key"
-        @click="$emit('clickShortcut', value)"
+        v-for="(item, index) in presets"
+        :key="index"
+        @click="$emit('clickShortcut', item.range)"
       >
-        {{ key }}
+        {{ item.label }}
       </li>
     </ul>
     <div class="range_inputs drp-buttons">
@@ -31,6 +31,6 @@
 
 <script>
 export default {
-  props: ["canSelect", "ranges"]
+  props: ["canSelect", "presets"]
 };
 </script>

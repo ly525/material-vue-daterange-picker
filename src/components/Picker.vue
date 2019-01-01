@@ -65,7 +65,7 @@
         </div>
         <calendar-ranges
           :canSelect="in_selection"
-          :ranges="ranges"
+          :presets="presets"
           @clickCancel="open = false"
           @clickApply="clickedApply"
           @clickShortcut="clickShortcut"
@@ -82,6 +82,8 @@ import CalendarRanges from "./Ranges.vue";
 import { nextMonth, prevMonth } from "../util/index";
 import clickoutside from "../directives/clickoutside";
 
+import { defaultPresets } from '../constant/index.js';
+
 export default {
   name: "MdDateRangePicker",
   components: { Calendar, CalendarRanges },
@@ -97,52 +99,10 @@ export default {
         return new Date();
       }
     },
-    ranges: {
-      type: Object,
+    presets: {
+      type: Array,
       default() {
-        // return {
-        //     Today: new Date(),
-        //     Yesterday: new Date(),
-        //     'This month': new Date(),
-        //     'This year': new Date(),
-        //     'Last week': new Date(),
-        //     'Last month': new Date()
-        // }
-        return {
-          Today: [
-            moment()
-              .subtract(0, "days")
-              .startOf("day"),
-            moment().endOf("day")
-          ],
-          Yesterday: [
-            moment()
-              .subtract(1, "days")
-              .startOf("day"),
-            moment().endOf("day")
-          ],
-          "Last 7 Days": [
-            moment()
-              .subtract(6, "days")
-              .startOf("day"),
-            moment().endOf("day")
-          ],
-          "Last 30 Days": [
-            moment()
-              .subtract(29, "days")
-              .startOf("day"),
-            moment().endOf("day")
-          ],
-          "This Month": [moment().startOf("month"), moment().endOf("month")],
-          "Last Month": [
-            moment()
-              .subtract(1, "month")
-              .startOf("month"),
-            moment()
-              .subtract(1, "month")
-              .endOf("month")
-          ]
-        };
+        return defaultPresets;
       }
     },
     opens: {
