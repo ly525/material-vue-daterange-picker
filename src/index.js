@@ -1,4 +1,4 @@
-import "./styles/index.scss";
+// import "./styles/index.scss";
 
 import DateRangePicker from "./components/Picker.vue";
 

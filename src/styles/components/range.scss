@@ -1,0 +1,49 @@
+.action-buttons {
+  clear: both;
+  padding: 8px;
+  line-height: 12px;
+  vertical-align: middle;
+}
+
+.ranges {
+  font-size: 12px;
+  float: none;
+  margin: 4px;
+  margin-top: 8px;
+  text-align: left;
+
+  ul {
+    list-style: none;
+    margin: 0 auto;
+    padding: 0;
+    width: 100%;
+  }
+
+  li {
+    box-sizing: border-box;
+    font-size: 12px;
+    padding: 8px 12px;
+    cursor: pointer;
+
+    // 如果开放样式给用户，让其自定义呢？
+    &:hover {
+      background-color: #08c;
+      color: #fff;
+    }
+
+    &.active {
+      background-color: #08c;
+      border: 1px solid #08c;
+      color: #fff;
+    }
+  }
+}
+
+/*  Larger Screen Styling */
+@media (min-width: 564px) {
+  .ranges  {
+    ul {
+      width: 160px;
+    }
+  }
+}

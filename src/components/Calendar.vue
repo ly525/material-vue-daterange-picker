@@ -1,5 +1,5 @@
 <template>
-  <table class="table-condensed">
+  <table class="calendar-table">
     <thead>
       <tr>
         <th class="prev available" @click="$emit('prevMonth')">
@@ -142,7 +142,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-td.today {
-  font-weight: bold;
-}
+@import '../styles/components/calendar.scss';
 </style>

@@ -48,6 +48,7 @@
     "vue-template-compiler": "^2.5.13"
   },
   "dependencies": {
+    "@material/button": "^0.40.0",
     "moment": "^2.22.2"
   }
 }
