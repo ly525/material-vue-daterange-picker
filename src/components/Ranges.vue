@@ -9,9 +9,9 @@
         {{ item.label }}
       </li>
     </ul>
-    <div class="range_inputs drp-buttons">
+    <div class="action-buttons">
       <button
-        class="applyBtn btn btn-sm btn-success md-picker-btn"
+        class="btn btn-sm btn-success"
         :disabled="canSelect"
         type="button"
         @click="$emit('clickApply')"
@@ -19,7 +19,7 @@
         Apply
       </button>
       <button
-        class="cancelBtn btn btn-sm btn-default"
+        class="btn btn-sm btn-default"
         type="button"
         @click="$emit('clickCancel')"
       >
@@ -30,7 +30,13 @@
 </template>
 
 <script>
+
 export default {
   props: ["canSelect", "presets"]
 };
 </script>
+
+<style lang="scss" scoped>
+@import '../styles/components/range.scss';
+</style>
+

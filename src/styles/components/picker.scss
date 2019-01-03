@@ -1,0 +1,358 @@
+/**
+ * =============================================================================
+ * ************   日期范围选择器   ************
+ * =============================================================================
+ *
+ * Inspired by https://github.com/zdhxiong/mdui
+ * Inspired by bootstrap.daterangepicker
+ * add
+ */
+
+/**
+ * =============================================================================
+ * ************   日期范围选择器   ************
+ * =============================================================================
+ *
+ * Inspired by https://github.com/zdhxiong/mdui
+ * Inspired by bootstrap.daterangepicker
+ */
+
+/**
+ * mixins
+ */
+ @mixin get-opens-arrow ($val: 7px, $is-before: true) {
+  top: -$val;
+  $bg: if($is-before, #ccc, #fff);
+
+  border-right: $val solid transparent;
+  border-bottom: $val solid $bg;
+  border-left: $val solid transparent;
+}
+
+%center-block {
+  left: 0;
+  right: 0;
+  width: 0;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/**
+  * 控制箭头在 daterangepicker 中的位置。center的时候，需要 JavaScript 辅助
+  * generate style below:
+  .opens-arrow-pos-left {
+    top: 35px;
+    left: 10px;
+    right: auto;
+  }
+
+  .opens-arrow-pos-left::before {
+    left: 9px;
+  }
+  .opens-arrow-pos-left::after {
+    left: 10px;
+  }
+
+*/
+@mixin control-opens-arrow-pos ($direction: left) {
+  $reverse-direction: if($direction == left, right, left);
+
+  &.opens-arrow-pos-#{$direction} {
+    top: 35px;
+    @if $direction != center {
+      #{$direction}: 10px;
+      // 这边的 auto 做了什么？
+      #{$reverse-direction}: auto;
+    }
+
+    &::before {
+      @if $direction != center {
+        #{$direction}: 9px;
+      }
+      @else {
+        @extend %center-block;
+      }
+    }
+
+    &::after {
+      @if $direction != center {
+        #{$direction}: 10px;
+      }
+      @else {
+        @extend %center-block;
+      }
+    }
+  }
+}
+
+
+/* gs-date-range-picker-container */
+.md-date-range-picker {
+  position: relative;
+
+  &__activator {
+    color: #7e848c;
+    display: inline-block;
+    width: 100%;
+    background: #fff;
+    cursor: pointer;
+    border: 1px solid #7e848c;
+    border-radius: 5px;
+    line-height: 35px;
+    padding: 0 20px 0 10px;
+    box-sizing: border-box;
+  }
+}
+
+// .caret {
+//   border: none;
+//   height: 34px;
+//   display: inline-block;
+//   position: absolute;
+//   top: 0;
+//   right: 0;
+// }
+
+// .caret::after {
+//   content: "\F107";
+//   font-family: FontAwesome;
+//   position: absolute;
+//   right: 10px;
+//   top: 50%;
+//   -webkit-transform: translateY(-50%);
+//   transform: translateY(-50%);
+// }
+
+$prefix-class: daterangepicker;
+
+.#{$prefix-class} {
+    font-size: 15px;
+    line-height: 1em;
+
+    position: absolute;
+    z-index: 3001;
+    top: 100px;
+    left: 20px;
+
+    width: 278px;
+    max-width: none;
+    margin-top: 7px;
+    padding: 0;
+
+    color: inherit;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+
+    &.show-calendar {
+      display: block;
+    }
+
+    // TODO what these code do ?
+    &::before,
+    &::after {
+      position: absolute;
+      display: inline-block;
+      border-bottom-color: red;
+      content: "";
+    }
+
+    &::before {
+      @include get-opens-arrow();
+    }
+
+    &::after {
+      @include get-opens-arrow(6px, false);
+    }
+
+    & {
+      @include control-opens-arrow-pos (left);
+      @include control-opens-arrow-pos (right);
+      @include control-opens-arrow-pos (center);
+    }
+
+    &.dropdown-menu {
+      // TODO max-width: none; 什么作用？
+      max-width: none;
+      // TODO z-index best practice ？？
+      z-index: 9;
+    }
+
+    &.show-calendar .calendar {
+      display: block;
+    }
+
+    .calendar {
+      display: none;
+      max-width: 270px;
+      margin: 4px;
+    }
+
+    &__input-wrapper {
+      position: relative;
+      .input-mini {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        color: #555;
+        height: 30px;
+        line-height: 30px;
+        display: block;
+        // vertical-align: middle;
+        margin: 0 0 5px 0;
+        padding: 0 6px 0 28px;
+        width: 100%;
+        // see more detail: https://github.com/ly525/v-md-date-range-picker/wiki/styles#box-sizing
+        // 如果不添加该属性，会因为 padding-left 的原因，导致 input box 向左移动
+        box-sizing: border-box;
+
+      }
+      i {
+        position: absolute;
+        left: 8px;
+        top: 8px;
+      }
+    }
+
+
+}
+
+.#{$prefix-class}.rtl {
+  text-align: center;
+  margin: 5px auto;
+  line-height: 30px;
+  position: relative;
+  padding-left: 28px;
+
+  .input-mini {
+    padding-right: 28px;
+    padding-left: 6px;
+  }
+
+  &__input-wrapper i {
+    left: auto;
+    right: 8px;
+  }
+}
+
+/*  Larger Screen Styling */
+@media (min-width: 564px) {
+  // TODO width auto 的使用场景
+  .daterangepicker {
+    width: auto;
+  }
+   .daterangepicker.show-calendar {
+    display: inline-flex;
+  }
+
+  .calendar {
+    &.left {
+      padding: 8px 0 8px 8px;
+    }
+    // 为何右边是 8px 8px 8px 0; 呢，也就是为何左边会有 8px ?
+    &.right {
+      padding: 8px;
+    }
+  }
+
+  .#{$prefix-class}.ltr {
+    // TODO ??
+    direction: ltr;
+    text-align: left;
+
+    .calendar.left {
+      clear: left;
+      margin-right: 0;
+
+      .calendar-table {
+        border-right: none;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+      // TODO 似乎没用
+      .calendar-table {
+        padding-right: 12px;
+      }
+
+      // TODO why ??
+      .daterangepicker__input-wrapper {
+        padding-right: 12px;
+      }
+
+      // TODO 似乎没用
+      .ranges,
+      .calendar {
+        float: left;
+      }
+
+    }
+    .calendar.right {
+      margin-left: 0;
+
+      .calendar-table {
+        border-left: none;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+    }
+  }
+
+  .#{$prefix-class}.rtl {
+    direction: rtl;
+    text-align: right;
+
+    .ranges {
+      float: left;
+    }
+
+    .calendar.left {
+      clear: right;
+      margin-left: 0;
+
+      .calendar-table {
+        border-left: none;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+
+      .daterangepicker__input-wrapper {
+        padding-left: 12px;
+      }
+      .calendar-table {
+        padding-left: 12px;
+      }
+    }
+
+    .calendar.right {
+      margin-right: 0;
+
+      .calendar-table {
+        border-right: none;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+    }
+
+    .ranges,
+    .calendar {
+      text-align: right;
+      float: right;
+    }
+
+  }
+}
+
+/* Enter and leave animations can use different */
+/* durations and timing functions.              */
+.slide-fade-enter-active {
+  transition: all 0.2s ease;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter,
+.slide-fade-leave-to {
+  transform: translateX(10px);
+  opacity: 0;
+}
