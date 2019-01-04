@@ -1,6 +1,6 @@
 {
   "name": "v-md-date-range-picker",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A material design daterange picker",
   "main": "dist/md-date-range-picker.cjs.js",
   "module": "dist/md-date-range-picker.es.js",
@@ -60,20 +60,5 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  },
-  "release": {
-    "prepare": [
-      {
-        "path": "@semantic-release/changelog"
-      },
-      [
-        "@semantic-release/git",
-        {
-          "assets": [
-            "CHANGELOG.md"
-          ]
-        }
-      ]
-    ]
   }
 }
