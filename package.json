@@ -1,6 +1,6 @@
 {
   "name": "v-md-date-range-picker",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A material design daterange picker",
   "main": "dist/md-date-range-picker.cjs.js",
   "module": "dist/md-date-range-picker.es.js",
@@ -24,7 +24,8 @@
     "lint": "eslint --ext js --ext vue src demo",
     "lint:fix": "npm run lint -- --fix",
     "format": "prettier {src,demo}/**/*.vue {src,demo}/**/*.js **/*.md **/*.json --write",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "semantic-release": "semantic-release"
   },
   "peerDependencies": {
     "vue": ">2.5.0"
@@ -48,7 +49,8 @@
     "rollup-plugin-vue": "^3.0.0",
     "sass-loader": "^7.1.0",
     "vue": "^2.5.13",
-    "vue-template-compiler": "^2.5.13"
+    "vue-template-compiler": "^2.5.13",
+    "semantic-release": "^15.13.2"
   },
   "dependencies": {
     "@material/button": "^0.40.0",
