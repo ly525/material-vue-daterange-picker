@@ -18,19 +18,19 @@
             <input
               class="input-mini form-control"
               type="text"
-              name="daterangepicker_start"
+              name="daterangepicker__start"
               :value="startText"
             />
             <i class="fa fa-calendar glyphicon glyphicon-calendar"></i>
           </div>
           <!-- <div class="calendar-table"> -->
             <calendar
-              :monthDate="monthDate"
+              :monthDate="inside__monthDate"
               :locale="locale"
-              :start="start"
-              :end="end"
-              :hover-start="hoverStart"
-              :hover-end="hoverEnd"
+              :start="inside__start"
+              :end="inside__end"
+              :hover-start="inside__hoverStart"
+              :hover-end="inside__hoverEnd"
               @nextMonth="nextMonth"
               @prevMonth="prevMonth"
               @dateClick="dateClick"
@@ -43,7 +43,7 @@
             <input
               class="input-mini form-control"
               type="text"
-              name="daterangepicker_end"
+              name="daterangepicker__end"
               :value="endText"
             />
             <i class="fa fa-calendar glyphicon glyphicon-calendar"></i>
@@ -52,10 +52,10 @@
             <calendar
               :monthDate="nextMonthDate"
               :locale="locale"
-              :start="start"
-              :end="end"
-              :hover-start="hoverStart"
-              :hover-end="hoverEnd"
+              :start="inside__start"
+              :end="inside__end"
+              :hover-start="inside__hoverStart"
+              :hover-end="inside__hoverEnd"
               @nextMonth="nextMonth"
               @prevMonth="prevMonth"
               @dateClick="dateClick"
@@ -126,11 +126,11 @@ export default {
       }
     };
 
-    data.monthDate = new Date(this.startDate);
-    data.start = new Date(this.startDate);
-    data.end = new Date(this.endDate);
-    data.hoverStart = new Date(this.startDate);
-    data.hoverEnd = new Date(this.endDate);
+    data.inside__monthDate = new Date(this.startDate);
+    data.inside__start = new Date(this.startDate);
+    data.inside__end = new Date(this.endDate);
+    data.inside__hoverStart = new Date(this.startDate);
+    data.inside__hoverEnd = new Date(this.endDate);
     data.in_selection = false; // in_selection means whether user click once, if user click once, set value true
     data.open = false;
 
@@ -146,41 +146,37 @@ export default {
   },
   methods: {
     nextMonth() {
-      this.monthDate = nextMonth(this.monthDate);
+      this.inside__monthDate = nextMonth(this.inside__monthDate);
     },
     prevMonth() {
-      this.monthDate = prevMonth(this.monthDate);
+      this.inside__monthDate = prevMonth(this.inside__monthDate);
     },
     dateClick(value) {
-      //  && new Date(value) >= this.start
       if (this.in_selection) {
         // second click action(第二次点击)
         this.in_selection = false;
         // if second click value is smaller than first, which means user clicked a previous date,
         // so set the smaller date as start date, bigger one as end date
-        if (new Date(value) <= this.start) {
-          this.hoverEnd = this.end = this.start;
-          this.hoverStart = this.start = new Date(value);
+        if (new Date(value) <= this.inside__start) {
+          this.inside__hoverEnd = this.inside__end = this.inside__start;
+          this.inside__hoverStart = this.inside__start = new Date(value);
         } else {
-          this.hoverEnd = this.end = new Date(value);
+          this.inside__hoverEnd = this.inside__end = new Date(value);
         }
       } else {
         // first click action, set value as start and end(第一次点击, 设置起始值皆为点击的值)
         this.in_selection = true;
-        this.hoverStart = this.start = new Date(value);
-        this.hoverEnd = this.end = new Date(value);
+        this.inside__hoverStart = this.inside__start = new Date(value);
+        this.inside__hoverEnd = this.inside__end = new Date(value);
       }
     },
     hoverDate(value) {
       let dt = new Date(value);
       if (this.in_selection) {
-        if (dt > this.start) {
-          // this.end = dt;
-          this.hoverEnd = dt;
+        if (dt > this.inside__start) {
+          this.inside__hoverEnd = dt;
         } else {
-          // this.end = this.start
-          // this.start = dt
-          this.hoverStart = dt;
+          this.inside__hoverStart = dt;
         }
       }
     },
@@ -199,43 +195,43 @@ export default {
     },
     clickedApply() {
       this.open = false;
-      // this.$emit('update', { startDate: this.start, endDate: this.end })
+      // this.$emit('update', { startDate: this.inside__start, endDate: this.inside__end })
     },
     clickShortcut(value) {
-      this.hoverStart = this.start = new Date(value[0]);
-      this.hoverEnd = this.end = new Date(value[1]);
+      this.inside__hoverStart = this.inside__start = new Date(value[0]);
+      this.inside__hoverEnd = this.inside__end = new Date(value[1]);
     }
   },
   computed: {
     nextMonthDate() {
-      return nextMonth(this.monthDate);
+      return nextMonth(this.inside__monthDate);
     },
     startText() {
-      return this.start.toLocaleDateString();
+      return new Date(this.inside__start).toLocaleDateString();
     },
     endText() {
-      return new Date(this.end).toLocaleDateString();
+      return new Date(this.inside__end).toLocaleDateString();
     },
     applyStartText() {
-      return this.start.toLocaleDateString();
+      return new Date(this.inside__start).toLocaleDateString();
     },
     applyEndText() {
-      return new Date(this.end).toLocaleDateString();
+      return new Date(this.inside__end).toLocaleDateString();
     }
   },
   watch: {
     startDate(value) {
-      this.start = new Date(value);
-      this.monthDate = new Date(value);
+      this.inside__start = new Date(value);
+      this.inside__monthDate = new Date(value);
     },
     endDate(value) {
-      this.end = new Date(value);
+      this.inside__end = new Date(value);
     },
     start(value) {
-      this.$emit("update", { startDate: this.start, endDate: this.end });
+      this.$emit("update", { startDate: this.inside__start, endDate: this.inside__end });
     },
     end(value) {
-      this.$emit("update", { startDate: this.start, endDate: this.end });
+      this.$emit("update", { startDate: this.inside__start, endDate: this.inside__end });
     }
   }
 };
