@@ -25,14 +25,14 @@
           </div>
           <!-- <div class="calendar-table"> -->
             <calendar
-              :monthDate="inside__monthDate"
+              :monthDate="inside__leftCalendarMonth"
               :locale="locale"
               :start="inside__start"
               :end="inside__end"
               :hover-start="inside__hoverStart"
               :hover-end="inside__hoverEnd"
-              @nextMonth="nextMonth"
-              @prevMonth="prevMonth"
+              @clickNextMonth="clickNextMonth"
+              @clickPrevMonth="clickPrevMonth"
               @dateClick="dateClick"
               @hoverDate="hoverDate"
             ></calendar>
@@ -50,14 +50,14 @@
           </div>
           <!-- <div class="calendar-table"> -->
             <calendar
-              :monthDate="nextMonthDate"
+              :monthDate="inside__rightCalendarMonth"
               :locale="locale"
               :start="inside__start"
               :end="inside__end"
               :hover-start="inside__hoverStart"
               :hover-end="inside__hoverEnd"
-              @nextMonth="nextMonth"
-              @prevMonth="prevMonth"
+              @clickNextMonth="clickNextMonth"
+              @clickPrevMonth="clickPrevMonth"
               @dateClick="dateClick"
               @hoverDate="hoverDate"
             ></calendar>
@@ -125,8 +125,9 @@ export default {
         firstDay: moment.localeData().firstDayOfWeek()
       }
     };
-
-    data.inside__monthDate = new Date(this.startDate);
+    // TODO 这里的 props 究竟是放在 data 里面进行初始化好，还是放在生命周期中好呢？
+    // https://github.com/ly525/blog/issues/252
+    data.inside__leftCalendarMonth = new Date(this.startDate);
     data.inside__start = new Date(this.startDate);
     data.inside__end = new Date(this.endDate);
     data.inside__hoverStart = new Date(this.startDate);
@@ -145,11 +146,11 @@ export default {
     return data;
   },
   methods: {
-    nextMonth() {
-      this.inside__monthDate = nextMonth(this.inside__monthDate);
+    clickNextMonth() {
+      this.inside__leftCalendarMonth = nextMonth(this.inside__leftCalendarMonth);
     },
-    prevMonth() {
-      this.inside__monthDate = prevMonth(this.inside__monthDate);
+    clickPrevMonth() {
+      this.inside__leftCalendarMonth = prevMonth(this.inside__leftCalendarMonth);
     },
     dateClick(value) {
       if (this.in_selection) {
@@ -203,8 +204,8 @@ export default {
     }
   },
   computed: {
-    nextMonthDate() {
-      return nextMonth(this.inside__monthDate);
+    inside__rightCalendarMonth() {
+      return nextMonth(this.inside__leftCalendarMonth);
     },
     startText() {
       return new Date(this.inside__start).toLocaleDateString();
@@ -222,7 +223,7 @@ export default {
   watch: {
     startDate(value) {
       this.inside__start = new Date(value);
-      this.inside__monthDate = new Date(value);
+      this.inside__leftCalendarMonth = new Date(value);
     },
     endDate(value) {
       this.inside__end = new Date(value);

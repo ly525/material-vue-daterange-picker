@@ -2,11 +2,11 @@
   <table class="calendar-table">
     <thead>
       <tr>
-        <th class="prev available" @click="$emit('prevMonth')">
+        <th class="prev available" @click="$emit('clickPrevMonth')">
           <i :class="[arrowLeftClass]"></i>
         </th>
         <th colspan="5" class="month">{{ monthName }} {{ year }}</th>
-        <th class="next available" @click="$emit('nextMonth')">
+        <th class="next available" @click="$emit('clickNextMonth')">
           <i :class="[arrowRightClass]"></i>
         </th>
       </tr>
