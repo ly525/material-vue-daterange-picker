@@ -106,8 +106,10 @@ export default {
       for (let i = 0; i < 6; i++) {
         calendar[i] = [];
       }
-
+      // 确定 6 * 7 日历中的第一天
       let startDay = daysInLastMonth - dayOfWeek + this.locale.firstDay + 1;
+      // 2015-02-01，该月第一天是周日，此时 startDay > daysInLastMonth
+      // https://user-images.githubusercontent.com/12668546/51437731-43104280-1cdd-11e9-82ae-9c270144b2a9.png
       if (startDay > daysInLastMonth) {
         startDay -= 7;
       }
