@@ -36,36 +36,37 @@
 <script>
 import moment from "moment";
 
+function clean(momentDate) {
+  return momentDate.clone().hour(0).minute(0).second(0).millisecond(0);
+}
+
 export default {
   name: "calendar",
-  props: ["monthDate", "locale", "hoverStart", "hoverEnd", "start", "end"],
+  props: ["calendarMonth", "locale", "hoverStart", "hoverEnd", "start", "end"],
   methods: {
     dayClass(date) {
-      let dt = new Date(date);
-      let cleanDt = dt.setHours(0, 0, 0, 0);
-      let cleanToday = new Date().setHours(0, 0, 0, 0);
-      let cleanStart = new Date(this.start).setHours(0, 0, 0, 0);
-      let cleanEnd = new Date(this.end).setHours(0, 0, 0, 0);
+      let dt = date.clone();
+      let cleanDt = clean(dt.clone());
+      let cleanToday = clean(moment());
+      let cleanStart = clean(this.start);
+      let cleanEnd = clean(this.end);
+      let hoverStart = clean(this.hoverStart);
+      let hoverEnd = clean(this.hoverEnd);
 
-      // hover 时候的start
-      let hoverStart = new Date(this.hoverStart).setHours(0, 0, 0, 0);
-      let hoverEnd = new Date(this.hoverEnd).setHours(0, 0, 0, 0);
       return {
-        off: date.month() !== this.month,
-        weekend: date.isoWeekday() > 5,
-        today: cleanDt == cleanToday,
+        off: dt.month() !== this.month,
+        // TODO what isoWeekday means ??
+        weekend: dt.isoWeekday() > 5,
+        today: cleanDt.isSame(cleanToday),
         // dt === start || dt === end
-        active:
-          cleanDt == cleanStart ||
-          cleanDt == cleanEnd ||
-          cleanDt == hoverStart ||
-          cleanDt == hoverEnd,
-        //  start <= dt <= end
+        active: cleanDt.isSame(cleanStart) || cleanDt.isSame(cleanEnd),
+        //  start <= dt <= end || hoverStart <= dt <= hoverEnd
+        // 当第一次点击(确认了 start )之后，此时 endDate === startDate，鼠标 hover 和 click 都需要显示一个范围
         "in-range":
           (dt >= cleanStart && dt <= cleanEnd) ||
           (dt >= hoverStart && dt <= hoverEnd),
-        "start-date": cleanDt == cleanStart || cleanDt == hoverStart,
-        "end-date": cleanDt == cleanEnd || cleanDt == hoverEnd
+        "start-date": cleanDt.isSame(cleanStart),
+        "end-date": cleanDt.isSame(cleanEnd),
       };
     }
   },
@@ -76,60 +77,74 @@ export default {
     arrowRightClass() {
       return "fa fa-chevron-right glyphicon glyphicon-chevron-right";
     },
+    // { Number } the month value for current calendar
+    month() {
+      return this.calendarMonth.month();
+    },
+    // TODO 这种有有依赖关系的 computed 是怎么处理的？
     monthName() {
-      return this.locale.monthNames[this.monthDate.getMonth()];
+      return this.locale.monthNames[this.month];
     },
     year() {
-      return this.monthDate.getFullYear();
+      return this.calendarMonth.year();
     },
-    month() {
-      return this.monthDate.getMonth();
-    },
+    /**
+     * TODO 这是一个数组，computed 数组的值 变化的时候，template 是怎么知道更新的呢
+     */
     calendar() {
-      let month = this.month;
-      let year = this.monthDate.getFullYear();
-      let daysInMonth = new Date(year, month, 0).getDate();
-      let firstDay = new Date(year, month, 1);
-      let lastDay = new Date(year, month, daysInMonth);
-      let lastMonth = moment(firstDay)
-        .subtract(1, "month")
-        .month();
-      let lastYear = moment(firstDay)
-        .subtract(1, "month")
-        .year();
+      console.log('calendar')
+      // Build the matrix of dates that will populate the calendar
+
+      const calendarMonth = this.calendarMonth;
+      let month = calendarMonth.month();
+      let year = calendarMonth.year();
+      let hour = calendarMonth.hour();
+      let minute = calendarMonth.minute();
+      let second = calendarMonth.second();
+      let daysInMonth = moment([year, month]).daysInMonth();
+      let firstDay = moment([year, month, 1]);
+      let lastDay = moment([year, month, daysInMonth]);
+      let lastMonth = moment(firstDay).subtract(1, 'month').month();
+      let lastYear = moment(firstDay).subtract(1, 'month').year();
       let daysInLastMonth = moment([lastYear, lastMonth]).daysInMonth();
+      let dayOfWeek = firstDay.day();
 
-      let dayOfWeek = firstDay.getDay();
-
+      // initialize a 6 rows x 7 columns array for the calendar
       let calendar = [];
+      calendar.firstDay = firstDay;
+      calendar.lastDay = lastDay;
 
       for (let i = 0; i < 6; i++) {
         calendar[i] = [];
       }
+
+      // populate the calendar with date objects
       // 确定 6 * 7 日历中的第一天
       let startDay = daysInLastMonth - dayOfWeek + this.locale.firstDay + 1;
-      // 2015-02-01，该月第一天是周日，此时 startDay > daysInLastMonth
+       // 2015-02-01，该月第一天是周日，此时 startDay > daysInLastMonth
       // https://user-images.githubusercontent.com/12668546/51437731-43104280-1cdd-11e9-82ae-9c270144b2a9.png
-      if (startDay > daysInLastMonth) {
-        startDay -= 7;
-      }
+      if (startDay > daysInLastMonth) { startDay -= 7 }
+      if (dayOfWeek === this.locale.firstDay) { startDay = daysInLastMonth - 6 }
 
-      if (dayOfWeek === this.locale.firstDay) {
-        startDay = daysInLastMonth - 6;
-      }
+      let curDate = moment([lastYear, lastMonth, startDay, 12, minute, second]);
 
-      let curDate = moment([lastYear, lastMonth, startDay, 12, 0, 0]);
-      for (
-        let i = 0, col = 0, row = 0;
-        i < 6 * 7;
-        i++, col++, curDate = moment(curDate).add(1, "day")
-      ) {
+      let col, row;
+      for (let i = 0, col = 0, row = 0; i < 42; i++, col++, curDate = moment(curDate).add(24, 'hour')) {
         if (i > 0 && col % 7 === 0) {
           col = 0;
-          row++;
+          row++
         }
-        calendar[row][col] = curDate.clone();
+        calendar[row][col] = curDate.clone().hour(hour).minute(minute).second(second)
         curDate.hour(12);
+
+        // check for minDate and maxDate
+        // if (this._minDate && calendar[row][col].format('YYYY-MM-DD') === this._minDate.format('YYYY-MM-DD') && calendar[row][col].isBefore(this._minDate) && side === 'left') {
+        //   calendar[row][col] = this._minDate.clone();
+        // }
+
+        // if (this._maxDate && calendar[row][col].format('YYYY-MM-DD') === this._maxDate.format('YYYY-MM-DD') && calendar[row][col].isAfter(this._maxDate) && side === 'right') {
+        //   calendar[row][col] = this._maxDate.clone();
+        // }
       }
 
       return calendar;

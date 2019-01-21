@@ -25,7 +25,7 @@
           </div>
           <!-- <div class="calendar-table"> -->
             <calendar
-              :monthDate="inside__leftCalendarMonth"
+              :calendar-month="inside__leftCalendarMonth"
               :locale="locale"
               :start="inside__start"
               :end="inside__end"
@@ -50,7 +50,7 @@
           </div>
           <!-- <div class="calendar-table"> -->
             <calendar
-              :monthDate="inside__rightCalendarMonth"
+              :calendar-month="inside__rightCalendarMonth"
               :locale="locale"
               :start="inside__start"
               :end="inside__end"
@@ -79,7 +79,6 @@
 import moment from "moment";
 import Calendar from "./Calendar.vue";
 import CalendarRanges from "./Ranges.vue";
-import { nextMonth, prevMonth } from "../util/index";
 import clickoutside from "../directives/clickoutside";
 
 import { defaultPresets } from '../constant/index.js';
@@ -127,11 +126,11 @@ export default {
     };
     // TODO 这里的 props 究竟是放在 data 里面进行初始化好，还是放在生命周期中好呢？
     // https://github.com/ly525/blog/issues/252
-    data.inside__leftCalendarMonth = new Date(this.startDate);
-    data.inside__start = new Date(this.startDate);
-    data.inside__end = new Date(this.endDate);
-    data.inside__hoverStart = new Date(this.startDate);
-    data.inside__hoverEnd = new Date(this.endDate);
+    data.inside__leftCalendarMonth = moment(this.startDate);
+    data.inside__start = moment(this.startDate);
+    data.inside__end = moment(this.endDate);
+    data.inside__hoverStart = moment(this.startDate);
+    data.inside__hoverEnd = moment(this.endDate);
     data.in_selection = false; // in_selection means whether user click once, if user click once, set value true
     data.open = false;
 
@@ -147,37 +146,45 @@ export default {
   },
   methods: {
     clickNextMonth() {
-      this.inside__leftCalendarMonth = nextMonth(this.inside__leftCalendarMonth);
+      // TODO 如果有 linkedCalendars，需要更新代码
+      // moment.js 的 add 和 sub tract 的改变自身的行为没有被 watch 到，原因是什么呢？
+      this.inside__leftCalendarMonth = this.inside__leftCalendarMonth.clone().add(1, 'month');
     },
     clickPrevMonth() {
-      this.inside__leftCalendarMonth = prevMonth(this.inside__leftCalendarMonth);
+      // TODO 如果有 linkedCalendars，需要更新代码
+      this.inside__leftCalendarMonth = this.inside__leftCalendarMonth.clone().subtract(1, 'month')
     },
+    /**
+     * TODO type of value
+     */
     dateClick(value) {
       if (this.in_selection) {
         // second click action(第二次点击)
         this.in_selection = false;
         // if second click value is smaller than first, which means user clicked a previous date,
         // so set the smaller date as start date, bigger one as end date
-        if (new Date(value) <= this.inside__start) {
+        if (value.isBefore(this.inside__start)) {
           this.inside__hoverEnd = this.inside__end = this.inside__start;
-          this.inside__hoverStart = this.inside__start = new Date(value);
+          this.inside__hoverStart = this.inside__start = value.clone();
         } else {
-          this.inside__hoverEnd = this.inside__end = new Date(value);
+          this.inside__hoverEnd = this.inside__end = value.clone();
         }
       } else {
         // first click action, set value as start and end(第一次点击, 设置起始值皆为点击的值)
         this.in_selection = true;
-        this.inside__hoverStart = this.inside__start = new Date(value);
-        this.inside__hoverEnd = this.inside__end = new Date(value);
+        this.inside__hoverStart = this.inside__start = value.clone();
+        this.inside__hoverEnd = this.inside__end = value.clone();
       }
     },
     hoverDate(value) {
-      let dt = new Date(value);
       if (this.in_selection) {
-        if (dt > this.inside__start) {
-          this.inside__hoverEnd = dt;
+        if (value > this.inside__start) {
+          // 参见：https://github.com/ly525/blog/issues/254
+          this.inside__hoverStart = this.inside__start.clone();
+          this.inside__hoverEnd = value.clone();
         } else {
-          this.inside__hoverStart = dt;
+          this.inside__hoverEnd = this.inside__start.clone();
+          this.inside__hoverStart = value.clone();
         }
       }
     },
@@ -198,41 +205,37 @@ export default {
       this.open = false;
       // this.$emit('update', { startDate: this.inside__start, endDate: this.inside__end })
     },
-    clickShortcut(value) {
-      this.inside__hoverStart = this.inside__start = new Date(value[0]);
-      this.inside__hoverEnd = this.inside__end = new Date(value[1]);
+    clickShortcut(range) {
+      const [start, end] = range;
+      this.inside__hoverStart = this.inside__start = moment(start);
+      this.inside__hoverEnd = this.inside__end = moment(end);
     }
   },
   computed: {
     inside__rightCalendarMonth() {
-      return nextMonth(this.inside__leftCalendarMonth);
+      return this.inside__leftCalendarMonth.clone().add(1, 'month')
     },
     startText() {
-      return new Date(this.inside__start).toLocaleDateString();
+      return this.inside__start.format(this.locale.format);
     },
     endText() {
-      return new Date(this.inside__end).toLocaleDateString();
+      return this.inside__end.format(this.locale.format);
     },
-    applyStartText() {
-      return new Date(this.inside__start).toLocaleDateString();
-    },
-    applyEndText() {
-      return new Date(this.inside__end).toLocaleDateString();
-    }
   },
   watch: {
     startDate(value) {
-      this.inside__start = new Date(value);
-      this.inside__leftCalendarMonth = new Date(value);
+      this.inside__start = moment(value);
+      this.inside__leftCalendarMonth = moment(value);
     },
     endDate(value) {
-      this.inside__end = new Date(value);
+      this.inside__end = moment(value);
+      // TODO not linked calendar
     },
     start(value) {
-      this.$emit("update", { startDate: this.inside__start, endDate: this.inside__end });
+      this.$emit("update", { startDate: this.inside__start.clone(), endDate: this.inside__end.clone() });
     },
     end(value) {
-      this.$emit("update", { startDate: this.inside__start, endDate: this.inside__end });
+      this.$emit("update", { startDate: this.inside__start.clone(), endDate: this.inside__end.clone()});
     }
   }
 };
