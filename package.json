@@ -1,6 +1,6 @@
 {
   "name": "v-md-date-range-picker",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A material design daterange picker",
   "main": "dist/md-date-range-picker.cjs.js",
   "module": "dist/md-date-range-picker.es.js",
