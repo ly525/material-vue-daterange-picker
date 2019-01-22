@@ -9,60 +9,10 @@
     </div>
     <transition name="slide-fade" mode="out-in">
       <div
-        class="daterangepicker dropdown-menu ltr"
+        class="daterangepicker dropdown-menu"
         :class="pickerStyles()"
         v-show="open"
       >
-        <div class="calendar left">
-          <div class="daterangepicker__input-wrapper">
-            <input
-              class="input-mini form-control"
-              type="text"
-              name="daterangepicker__start"
-              :value="startText"
-            />
-            <i class="fa fa-calendar glyphicon glyphicon-calendar"></i>
-          </div>
-          <!-- <div class="calendar-table"> -->
-            <calendar
-              :calendar-month="inside__leftCalendarMonth"
-              :locale="locale"
-              :start="inside__start"
-              :end="inside__end"
-              :hover-start="inside__hoverStart"
-              :hover-end="inside__hoverEnd"
-              @clickNextMonth="clickNextMonth"
-              @clickPrevMonth="clickPrevMonth"
-              @dateClick="dateClick"
-              @hoverDate="hoverDate"
-            ></calendar>
-          <!-- </div> -->
-        </div>
-        <div class="calendar right">
-          <div class="daterangepicker__input-wrapper">
-            <input
-              class="input-mini form-control"
-              type="text"
-              name="daterangepicker__end"
-              :value="endText"
-            />
-            <i class="fa fa-calendar glyphicon glyphicon-calendar"></i>
-          </div>
-          <!-- <div class="calendar-table"> -->
-            <calendar
-              :calendar-month="inside__rightCalendarMonth"
-              :locale="locale"
-              :start="inside__start"
-              :end="inside__end"
-              :hover-start="inside__hoverStart"
-              :hover-end="inside__hoverEnd"
-              @clickNextMonth="clickNextMonth"
-              @clickPrevMonth="clickPrevMonth"
-              @dateClick="dateClick"
-              @hoverDate="hoverDate"
-            ></calendar>
-          <!-- </div> -->
-        </div>
         <calendar-ranges
           :canSelect="in_selection"
           :presets="presets"
@@ -70,6 +20,32 @@
           @clickApply="clickedApply"
           @clickShortcut="clickShortcut"
         ></calendar-ranges>
+        <calendar
+          class="calendar left"
+          :calendar-month="inside__leftCalendarMonth"
+          :locale="locale"
+          :start="inside__start"
+          :end="inside__end"
+          :hover-start="inside__hoverStart"
+          :hover-end="inside__hoverEnd"
+          @clickNextMonth="clickNextMonth"
+          @clickPrevMonth="clickPrevMonth"
+          @dateClick="dateClick"
+          @hoverDate="hoverDate"
+        ></calendar>
+        <calendar
+          class="calendar right"
+          :calendar-month="inside__rightCalendarMonth"
+          :locale="locale"
+          :start="inside__start"
+          :end="inside__end"
+          :hover-start="inside__hoverStart"
+          :hover-end="inside__hoverEnd"
+          @clickNextMonth="clickNextMonth"
+          @clickPrevMonth="clickPrevMonth"
+          @dateClick="dateClick"
+          @hoverDate="hoverDate"
+        ></calendar>
       </div>
     </transition>
   </div>
@@ -197,8 +173,6 @@ export default {
         "opens-arrow-pos-right": this.opens == "right",
         "opens-arrow-pos-left": this.opens == "left",
         "opens-arrow-pos-center": this.opens == "center",
-        // opensright: this.opens == "right",
-        // opensleft: this.opens == "left"
       };
     },
     clickedApply() {

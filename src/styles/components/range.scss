@@ -8,7 +8,6 @@
 .ranges {
   font-size: 12px;
   float: none;
-  margin: 4px;
   margin-top: 8px;
   text-align: left;
 
@@ -27,8 +26,7 @@
 
     // 如果开放样式给用户，让其自定义呢？
     &:hover {
-      background-color: #08c;
-      color: #fff;
+      background-color: #eee;
     }
 
     &.active {
@@ -39,11 +37,12 @@
   }
 }
 
+
 /*  Larger Screen Styling */
 @media (min-width: 564px) {
   .ranges  {
     ul {
-      width: 160px;
+      width: 140px;
     }
   }
 }

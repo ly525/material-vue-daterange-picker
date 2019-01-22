@@ -17,6 +17,10 @@
  * Inspired by bootstrap.daterangepicker
  */
 
+ * {
+   box-sizing: border-box;
+ }
+
 /**
  * mixins
  */
@@ -178,60 +182,15 @@ $prefix-class: daterangepicker;
       z-index: 9;
     }
 
-    &.show-calendar .calendar {
+    .calendar-table {
+      display: none;
+      max-width: 270px;
+    }
+
+    &.show-calendar .calendar-table {
       display: block;
     }
 
-    .calendar {
-      display: none;
-      max-width: 270px;
-      margin: 4px;
-    }
-
-    &__input-wrapper {
-      position: relative;
-      .input-mini {
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        color: #555;
-        height: 30px;
-        line-height: 30px;
-        display: block;
-        // vertical-align: middle;
-        margin: 0 0 5px 0;
-        padding: 0 6px 0 28px;
-        width: 100%;
-        // see more detail: https://github.com/ly525/v-md-date-range-picker/wiki/styles#box-sizing
-        // 如果不添加该属性，会因为 padding-left 的原因，导致 input box 向左移动
-        box-sizing: border-box;
-
-      }
-      i {
-        position: absolute;
-        left: 8px;
-        top: 8px;
-      }
-    }
-
-
-}
-
-.#{$prefix-class}.rtl {
-  text-align: center;
-  margin: 5px auto;
-  line-height: 30px;
-  position: relative;
-  padding-left: 28px;
-
-  .input-mini {
-    padding-right: 28px;
-    padding-left: 6px;
-  }
-
-  &__input-wrapper i {
-    left: auto;
-    right: 8px;
-  }
 }
 
 /*  Larger Screen Styling */
@@ -239,105 +198,20 @@ $prefix-class: daterangepicker;
   // TODO width auto 的使用场景
   .daterangepicker {
     width: auto;
-  }
-   .daterangepicker.show-calendar {
-    display: inline-flex;
-  }
 
-  .calendar {
-    &.left {
-      padding: 8px 0 8px 8px;
-    }
-    // 为何右边是 8px 8px 8px 0; 呢，也就是为何左边会有 8px ?
-    &.right {
-      padding: 8px;
-    }
-  }
-
-  .#{$prefix-class}.ltr {
-    // TODO ??
-    direction: ltr;
-    text-align: left;
-
-    .calendar.left {
-      clear: left;
-      margin-right: 0;
-
-      .calendar-table {
-        border-right: none;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-      }
-      // TODO 似乎没用
-      .calendar-table {
-        padding-right: 12px;
-      }
-
-      // TODO why ??
-      .daterangepicker__input-wrapper {
-        padding-right: 12px;
-      }
-
-      // TODO 似乎没用
-      .ranges,
-      .calendar {
-        float: left;
-      }
-
-    }
-    .calendar.right {
-      margin-left: 0;
-
-      .calendar-table {
-        border-left: none;
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-      }
-    }
-  }
-
-  .#{$prefix-class}.rtl {
-    direction: rtl;
-    text-align: right;
-
-    .ranges {
-      float: left;
+    &.show-calendar {
+      display: inline-flex;
     }
 
-    .calendar.left {
-      clear: right;
-      margin-left: 0;
-
-      .calendar-table {
-        border-left: none;
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
+    .calendar-table {
+      &.left {
+        padding: 8px 0 8px 8px;
       }
-
-      .daterangepicker__input-wrapper {
-        padding-left: 12px;
-      }
-      .calendar-table {
-        padding-left: 12px;
+      // 为何右边是 8px 8px 8px 0; 呢，也就是为何左边会有 8px ?
+      &.right {
+        padding: 8px;
       }
     }
-
-    .calendar.right {
-      margin-right: 0;
-
-      .calendar-table {
-        border-right: none;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-      }
-    }
-
-    .ranges,
-    .calendar {
-      text-align: right;
-      float: right;
-    }
-
   }
 }
 
