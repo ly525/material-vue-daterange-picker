@@ -92,7 +92,6 @@ export default {
      * TODO 这是一个数组，computed 数组的值 变化的时候，template 是怎么知道更新的呢
      */
     calendar() {
-      console.log('calendar')
       // Build the matrix of dates that will populate the calendar
 
       const calendarMonth = this.calendarMonth;

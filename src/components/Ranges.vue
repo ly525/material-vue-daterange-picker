@@ -2,9 +2,10 @@
   <div class="ranges">
     <ul v-if="presets">
       <li
-        v-for="(item, index) in presets"
+        v-for="(item, index) in inside__presets"
         :key="index"
-        @click="$emit('clickShortcut', item.range)"
+        :class="{'active': item.label === chosenLabel}"
+        @click="$emit('clickPreset',item)"
       >
         {{ item.label }}
       </li>
@@ -32,7 +33,47 @@
 <script>
 
 export default {
-  props: ["canSelect", "presets"]
+  props: ["canSelect", "presets"],
+  inject: ['picker'],
+  computed: {
+    chosenLabel: function () {
+      let chosenLabel = '';
+      let customRange = true;
+      const picker = this.picker;
+      const ftm = 'YYYY-MM-DD';
+      for (let preset of this.presets) {
+        const [start, end] = preset.range;
+        //ignore times when comparing dates if time picker is not enabled
+        if (picker.inside__start.format(ftm) === start.format(ftm) && picker.inside__end.format(ftm) === end.format(ftm)) {
+            customRange = false;
+            chosenLabel = preset.label;
+            break;
+        }
+      }
+
+      if (customRange) {
+        if (this.picker.showCustomRangeLabel) {
+          chosenLabel = this.picker.locale.customRangeLabel;
+        } else {
+          chosenLabel = null;
+        }
+      }
+      return chosenLabel;
+    },
+    inside__presets () {
+      const presets = this.preset;
+      if (this.picker.showCustomRangeLabel) {
+        return [
+          ...this.presets,
+          {
+            label: this.picker.locale.customRangeLabel,
+            range: '',
+          },
+        ];
+      }
+      return this.presets;
+    },
+  }
 };
 </script>
 

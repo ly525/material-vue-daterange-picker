@@ -18,7 +18,7 @@
           :presets="presets"
           @clickCancel="open = false"
           @clickApply="clickedApply"
-          @clickShortcut="clickShortcut"
+          @clickPreset="clickPreset"
         ></calendar-ranges>
         <calendar
           class="calendar left"
@@ -63,6 +63,11 @@ export default {
   name: "MdDateRangePicker",
   components: { Calendar, CalendarRanges },
   directives: { clickoutside },
+  provide () {
+    return {
+      'picker': this
+    }
+  },
   props: {
     startDate: {
       default() {
@@ -83,7 +88,11 @@ export default {
     opens: {
       type: String,
       default: "left"
-    }
+    },
+    showCustomRangeLabel: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     let data = {
@@ -179,8 +188,9 @@ export default {
       this.open = false;
       // this.$emit('update', { startDate: this.inside__start, endDate: this.inside__end })
     },
-    clickShortcut(range) {
-      const [start, end] = range;
+    clickPreset(preset) {
+      if (preset.label === this.locale.customRangeLabel) return;
+      const [start, end] = preset.range;
       this.inside__hoverStart = this.inside__start = moment(start);
       this.inside__hoverEnd = this.inside__end = moment(end);
     }
@@ -197,9 +207,18 @@ export default {
     },
   },
   watch: {
+    /**
+     * 有两个地方：
+     * 1. 点击左侧快捷键(clickPreset)，确认 inside__start
+     * 2.
+     *
+     * 如果使用 计算属性，则 clickPrevMonth 和 clickNextMonth 的时候，需要设置计算属性的 setter，但这时候 setter 就不知道写什么了
+     */
+    inside__start (value) {
+      this.inside__leftCalendarMonth = value.clone();
+    },
     startDate(value) {
       this.inside__start = moment(value);
-      this.inside__leftCalendarMonth = moment(value);
     },
     endDate(value) {
       this.inside__end = moment(value);
