@@ -9,7 +9,7 @@ import moment from 'moment';
 function getRange (startOffset=0, endOffset=0, period='day') {
   return [
     moment().subtract(startOffset, period).startOf(period),
-    moment().endOf(period),
+    moment().subtract(endOffset, period).endOf(period),
   ];
 }
 
