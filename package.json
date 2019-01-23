@@ -65,5 +65,9 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "jest": {
+    "coverageDirectory": "./test/unit/coverage/",
+    "collectCoverage": true
   }
 }
