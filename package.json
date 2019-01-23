@@ -19,13 +19,14 @@
     "dev": "npm run build -- -w & poi demo/index.js",
     "build:demo": "npm run build && poi build demo/index.js",
     "deploy": "npm run build:demo && ghpages ly525/md-date-range-picker -p build",
-    "test": "npm run lint",
+    "test": "export NODE_ENV=test && export BABEL_ENV=test && jest --config test/unit/jest.conf.js --coverage",
     "build": "bili src/index.js",
     "lint": "eslint --ext js --ext vue src demo",
     "lint:fix": "npm run lint -- --fix",
     "format": "prettier {src,demo}/**/*.vue {src,demo}/**/*.js **/*.md **/*.json --write",
     "prepublish": "npm run build",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "cz": "git-cz"
   },
   "peerDependencies": {
     "vue": ">2.5.0"
@@ -33,6 +34,8 @@
   "devDependencies": {
     "@semantic-release/changelog": "^3.0.2",
     "@semantic-release/git": "^7.0.7",
+    "@vue/test-utils": "^1.0.0-beta.28",
+    "babel-jest": "^23.6.0",
     "bili": "^2.2.6",
     "cz-conventional-changelog": "^2.1.0",
     "eslint": "^4.17.0",
@@ -42,15 +45,17 @@
     "eslint-plugin-vue": "^4.2.2",
     "ghpages": "^0.0.10",
     "husky": "^0.14.3",
+    "jest": "^23.6.0",
     "lint-staged": "^6.1.0",
     "node-sass": "^4.9.4",
     "poi": "^9.6.13",
     "prettier": "^1.10.2",
     "rollup-plugin-vue": "^3.0.0",
     "sass-loader": "^7.1.0",
+    "semantic-release": "^15.13.2",
     "vue": "^2.5.13",
-    "vue-template-compiler": "^2.5.13",
-    "semantic-release": "^15.13.2"
+    "vue-jest": "^3.0.2",
+    "vue-template-compiler": "^2.5.13"
   },
   "dependencies": {
     "@material/button": "^0.40.0",
