@@ -15,6 +15,9 @@ v-md-date-range-picker
 <a href="https://www.npmjs.com/package/v-md-date-range-picker"><img alt="undefined" src="https://img.shields.io/npm/v/v-md-date-range-picker.svg"></a>
 <a href="https://travis-ci.org/ly525/v-md-date-range-picker"><img src="https://travis-ci.org/ly525/v-md-date-range-picker.svg?branch=master" alt="Build Status" title="Build Status"></a>
 <a href="https://www.npmjs.com/package/v-md-date-range-picker"><img alt="undefined" src="https://img.shields.io/npm/dt/v-md-date-range-picker.svg"></a>
+<a href="https://codecov.io/gh/ly525/v-md-date-range-picker">
+  <img src="https://codecov.io/gh/ly525/v-md-date-range-picker/branch/master/graph/badge.svg" />
+</a>
 </p>
 
 ## Getting Started
