@@ -5,7 +5,15 @@
         <th class="prev available" @click="$emit('clickPrevMonth')">
           <i :class="[arrowLeftClass]"></i>
         </th>
-        <th colspan="5" class="month">{{ monthName }} {{ year }}</th>
+        <th colspan="5" class="month">
+          {{ monthName }}
+          <!-- select year start -->
+          <select class="yearselect" v-model="activeYear" v-if="picker.showYearSelect">
+            <option v-for="(year, index) in RangeOfYear" :value="year" :key="index">{{year}}</option>
+          </select>
+          <span v-else>{{ activeYear }}</span>
+          <!-- select year end -->
+        </th>
         <th class="next available" @click="$emit('clickNextMonth')">
           <i :class="[arrowRightClass]"></i>
         </th>
@@ -34,15 +42,27 @@
 </template>
 
 <script>
-import moment from "moment";
+import moment,{ min } from "moment";
 
 function clean(momentDate) {
   return momentDate.clone().hour(0).minute(0).second(0).millisecond(0);
 }
 
+// _.range([start=0], end, [step=1])
+function range(start=0, end, step=1) {
+  const arr = [];
+  start = +start;
+  end = +end;
+  for (let i = start; i<=end; i=i+step) {
+    arr.push(i);
+  }
+  return arr;
+}
+
 export default {
   name: "calendar",
-  props: ["calendarMonth", "locale", "hoverStart", "hoverEnd", "start", "end"],
+  inject: ['picker'],
+  props: ["location", "calendarMonth", "locale", "hoverStart", "hoverEnd", "start", "end"],
   methods: {
     dayClass(date) {
       let dt = date.clone();
@@ -147,7 +167,30 @@ export default {
       }
 
       return calendar;
-    }
+    },
+    // if show year select
+    RangeOfYear () {
+      if (!this.picker.showYearSelect) return [];
+      // TODO 这边因为依赖计算属性：this.calendar 那么是否需要处理 this.calendar[1]为空的情况？
+      // const currentYear = this.calendar[1][1].year();
+
+      const picker = this.picker;
+      const maxYear = (picker.maxDate && picker.maxDate.year()) || picker.maxYear;
+      const minYear = (picker.minDate && picker.minDate.year()) || picker.minYear;
+      return range(minYear, maxYear, 1);
+    },
+    activeYear: {
+      get() {
+        return this.calendarMonth.year();
+      },
+      set(newYear) {
+        const calendarMonth = moment([newYear, this.month]);
+        this.$emit('clickYearSelect', {
+          location: this.location,
+          calendarMonth,
+        });
+      },
+    },
   },
   filters: {
     dateNum(value) {

@@ -21,15 +21,14 @@ table {
     border: 1px solid transparent;
     white-space: nowrap;
     cursor: pointer;
-
-    &:hover {
-      background-color: #eee;
-      border-color: transparent;
-      color: inherit;
-    }
   }
 }
 td {
+  &:hover {
+    background-color: #eee;
+    border-color: transparent;
+    color: inherit;
+  }
   &.today {
     font-weight: bold;
   }

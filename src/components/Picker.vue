@@ -22,6 +22,7 @@
         ></calendar-ranges>
         <calendar
           class="calendar left"
+          location="left"
           :calendar-month="inside__leftCalendarMonth"
           :locale="locale"
           :start="inside__start"
@@ -32,9 +33,11 @@
           @clickPrevMonth="clickPrevMonth"
           @dateClick="dateClick"
           @hoverDate="hoverDate"
+          @clickYearSelect="clickYearSelect"
         ></calendar>
         <calendar
           class="calendar right"
+          location="right"
           :calendar-month="inside__rightCalendarMonth"
           :locale="locale"
           :start="inside__start"
@@ -45,6 +48,7 @@
           @clickPrevMonth="clickPrevMonth"
           @dateClick="dateClick"
           @hoverDate="hoverDate"
+          @clickYearSelect="clickYearSelect"
         ></calendar>
       </div>
     </transition>
@@ -93,6 +97,18 @@ export default {
       type: Boolean,
       default: false,
     },
+    showYearSelect: {
+      type: Boolean,
+      default: false,
+    },
+    minYear: {
+      type: String,
+      default: moment().subtract(100, 'year').format('YYYY'),
+    },
+    maxYear: {
+      type: String,
+      default: moment().add(100, 'year').format('YYYY'),
+    },
   },
   data() {
     let data = {
@@ -111,7 +127,9 @@ export default {
     };
     // TODO 这里的 props 究竟是放在 data 里面进行初始化好，还是放在生命周期中好呢？
     // https://github.com/ly525/blog/issues/252
+    // https://github.com/ly525/blog/issues/258
     data.inside__leftCalendarMonth = moment(this.startDate);
+    data.inside__rightCalendarMonth = moment(this.endDate);
     data.inside__start = moment(this.startDate);
     data.inside__end = moment(this.endDate);
     data.inside__hoverStart = moment(this.startDate);
@@ -130,6 +148,9 @@ export default {
     return data;
   },
   methods: {
+    clickYearSelect({location, calendarMonth}) {
+      this[`inside__${location}CalendarMonth`] = calendarMonth.clone();
+    },
     clickNextMonth() {
       // TODO 如果有 linkedCalendars，需要更新代码
       // moment.js 的 add 和 sub tract 的改变自身的行为没有被 watch 到，原因是什么呢？
@@ -196,9 +217,6 @@ export default {
     }
   },
   computed: {
-    inside__rightCalendarMonth() {
-      return this.inside__leftCalendarMonth.clone().add(1, 'month')
-    },
     startText() {
       return this.inside__start.format(this.locale.format);
     },
@@ -216,6 +234,12 @@ export default {
      */
     inside__start (value) {
       this.inside__leftCalendarMonth = value.clone();
+    },
+    inside__leftCalendarMonth: {
+      handler(leftMonth) {
+        this.inside__rightCalendarMonth = leftMonth.clone().add(1, 'month');
+      },
+      immediate: true,
     },
     startDate(value) {
       this.inside__start = moment(value);
