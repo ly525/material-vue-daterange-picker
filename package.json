@@ -9,6 +9,16 @@
   "unpkg": "dist/md-date-range-picker.min.js",
   "author": "ly525 <lantern.done@gmail.com>",
   "repository": "https://github.com/ly525/v-md-date-range-picker",
+  "keywords": [
+    "vue",
+    "vue.js",
+    "component",
+    "datepicker",
+    "daterangepicker",
+    "date-range-picker",
+    "no jQuery",
+    "vue 2"
+  ],
   "files": [
     "dist",
     "src",
