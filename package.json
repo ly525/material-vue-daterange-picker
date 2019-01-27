@@ -2,11 +2,11 @@
   "name": "v-md-date-range-picker",
   "version": "0.0.6",
   "description": "A material design daterange picker",
-  "main": "dist/md-date-range-picker.cjs.js",
-  "module": "dist/md-date-range-picker.es.js",
-  "browser": "dist/md-date-range-picker.js",
-  "cdn": "dist/md-date-range-picker.min.js",
-  "unpkg": "dist/md-date-range-picker.min.js",
+  "main": "dist/v-md-date-range-picker.cjs.js",
+  "module": "dist/v-md-date-range-picker.es.js",
+  "browser": "dist/v-md-date-range-picker.js",
+  "cdn": "dist/v-md-date-range-picker.min.js",
+  "unpkg": "dist/v-md-date-range-picker.min.js",
   "author": "ly525 <lantern.done@gmail.com>",
   "repository": "https://github.com/ly525/v-md-date-range-picker",
   "keywords": [
@@ -34,7 +34,9 @@
     "format": "prettier {src,demo}/**/*.vue {src,demo}/**/*.js **/*.md **/*.json --write",
     "prepublish": "npm run build",
     "semantic-release": "semantic-release",
-    "cz": "git-cz"
+    "cz": "git-cz",
+    "dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
   },
   "peerDependencies": {
     "vue": ">2.5.0"
@@ -63,7 +65,9 @@
     "semantic-release": "^15.13.2",
     "vue": "^2.5.13",
     "vue-jest": "^3.0.2",
-    "vue-template-compiler": "^2.5.13"
+    "vue-template-compiler": "^2.5.13",
+    "vuepress": "^1.0.0-alpha.32",
+    "vuepress-plugin-demo-block": "^0.7.0"
   },
   "dependencies": {
     "@material/button": "^0.40.0",

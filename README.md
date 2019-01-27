@@ -1,4 +1,4 @@
-English
+[Document](https://ly525.github.io/v-md-date-range-picker/) [中文文档](https://ly525.github.io/v-md-date-range-picker/zh/)
 
 <h1 align="center">
 v-md-date-range-picker
@@ -48,4 +48,3 @@ Vue.use(VMdDateRangePicker);
 ## Build
 > Powed by following:
 - https://github.com/egoist/bili
-- https://github.com/egoist/poi

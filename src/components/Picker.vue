@@ -64,7 +64,7 @@ import clickoutside from "../directives/clickoutside";
 import { defaultPresets } from '../constant/index.js';
 
 export default {
-  name: "VMdDateRangePicker",
+  name: "v-md-date-range-picker",
   components: { Calendar, CalendarRanges },
   directives: { clickoutside },
   provide () {

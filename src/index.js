@@ -1,9 +1,9 @@
 // import "./styles/index.scss";
 
-import DateRangePicker from "./components/Picker.vue";
+import VMdDateRangePicker from "./components/Picker.vue";
 
 const install = function(Vue) {
-  Vue.component(DateRangePicker.name, DateRangePicker);
+  Vue.component(VMdDateRangePicker.name, VMdDateRangePicker);
 };
 
 // auto install
@@ -13,5 +13,5 @@ if (typeof window !== "undefined" && window.Vue) {
 
 export default {
   install,
-  DateRangePicker
+  VMdDateRangePicker
 };
