@@ -88,7 +88,9 @@ export default {
     // The range of each object an array with two dates representing the bounds of the range.
     presets: {
       type: Array,
-      default: defaultPresets,
+      default() {
+        return defaultPresets;
+      },
     },
     // Whether the picker appears aligned to the left, to the right, or centered under the HTML element it's attached to.
     opens: {
