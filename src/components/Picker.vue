@@ -64,7 +64,7 @@ import clickoutside from "../directives/clickoutside";
 import { defaultPresets } from '../constant/index.js';
 
 export default {
-  name: "MdDateRangePicker",
+  name: "VMdDateRangePicker",
   components: { Calendar, CalendarRanges },
   directives: { clickoutside },
   provide () {
@@ -73,38 +73,46 @@ export default {
     }
   },
   props: {
+    // The beginning date of the initially selected date range.
+    // If you provide a string, it must match the date format string set in your locale setting
     startDate: {
-      default() {
-        return new Date();
-      }
+      type: String,
+      default: moment().format('YYYY-MM-DD')
     },
+    // The end date of the initially selected date range.
     endDate: {
-      default() {
-        return new Date();
-      }
+      type: String,
+      default: moment().format('YYYY-MM-DD')
     },
+    // Set predefined date ranges the user can select from.
+    // The range of each object an array with two dates representing the bounds of the range.
     presets: {
       type: Array,
-      default() {
-        return defaultPresets;
-      }
+      default: defaultPresets,
     },
+    // Whether the picker appears aligned to the left, to the right, or centered under the HTML element it's attached to.
     opens: {
       type: String,
       default: "left"
     },
+    // Displays "Custom Range" at the end of the list of predefined ranges, when the ranges option is used.
+    // This option will be highlighted whenever the current date range selection does not match one of the predefined ranges.
+    // Clicking it will display the calendars to select a new range.
     showCustomRangeLabel: {
       type: Boolean,
       default: false,
     },
+    // Show year select boxes above calendars to jump to a specific year.
     showYearSelect: {
       type: Boolean,
       default: false,
     },
+    // The minimum year shown in the dropdowns when showYearSelect is set to true.
     minYear: {
       type: String,
       default: moment().subtract(100, 'year').format('YYYY'),
     },
+    // The maximum year shown in the dropdowns when showYearSelect is set to true.
     maxYear: {
       type: String,
       default: moment().add(100, 'year').format('YYYY'),
