@@ -68,6 +68,7 @@ module.exports = {
     ['script', { src: 'https://www.googletagmanager.com/gtag/js?id=UA-133346622-1' }],
     ['script', { src: '/ga.js' }],
     ['script', { src: '/bt.js' }],
+    ['script', { src: '/yandex.js' }],
   ],
   plugins: [
     ['demo-block', {
