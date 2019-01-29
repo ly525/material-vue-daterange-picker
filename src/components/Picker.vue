@@ -190,6 +190,11 @@ export default {
         this.in_selection = true;
         this.inside__hoverStart = this.inside__start = value.clone();
         this.inside__hoverEnd = this.inside__end = value.clone();
+        // Notice: If you watch inside__start, its callback function will be executed after inside__end is assigned, which is exactly what we want.
+        // You can add a loop to test here
+        // In fact, the callback function is actually updateMonthCalendar, which is to update the date based on the values of start and end.
+        // So if the callback is callback after both the inside__start and inside__end, that's right!
+        // updateMonthCalendar() === callback function for watch inside__start
       }
     },
     hoverDate(value) {
@@ -241,8 +246,12 @@ export default {
      * 2.
      *
      * 如果使用 计算属性，则 clickPrevMonth 和 clickNextMonth 的时候，需要设置计算属性的 setter，但这时候 setter 就不知道写什么了
+     * TODO 值变化的时候，什么时候执行 watch 呢？ nextTick 吗？
      */
     inside__start (value) {
+      // inspired by https://github.com/dangrossman/daterangepicker/blob/master/daterangepicker.js#L554
+      // fix #43
+      if (value.month() === this.inside__end.month()) return;
       this.inside__leftCalendarMonth = value.clone();
     },
     inside__leftCalendarMonth: {
