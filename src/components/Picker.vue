@@ -229,6 +229,10 @@ export default {
       const [start, end] = preset.range;
       this.inside__start = moment(start);
       this.inside__end = moment(end);
+      // fix #47
+      this.inside__leftCalendarMonth = moment(start);
+      // TODO 需要想一下，联动情况下，快捷日期，选择范围如果超过两个月，该如何显示？
+      // TODO if linkedCalendar, what should the UI show if end - start > 60 days?
     },
   },
   computed: {
