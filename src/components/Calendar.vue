@@ -42,36 +42,37 @@
 </template>
 
 <script>
-import moment,{ min } from "moment";
+import moment from 'moment';
 
-function clean(momentDate) {
+function clean (momentDate) {
+  /* eslint-disable */
   return momentDate.clone().hour(0).minute(0).second(0).millisecond(0);
 }
 
 // _.range([start=0], end, [step=1])
-function range(start=0, end, step=1) {
+function range (start = 0, end, step = 1) {
   const arr = [];
   start = +start;
   end = +end;
-  for (let i = start; i<=end; i=i+step) {
+  for (let i = start; i <= end; i += step) {
     arr.push(i);
   }
   return arr;
 }
 
 export default {
-  name: "calendar",
+  name: 'calendar',
   inject: ['picker'],
-  props: ["location", "calendarMonth", "locale", "hoverStart", "hoverEnd", "start", "end"],
+  props: ['location', 'calendarMonth', 'locale', 'start', 'end'],
   methods: {
-    dayClass(date) {
-      let dt = date.clone();
-      let cleanDt = clean(dt.clone());
-      let cleanToday = clean(moment());
-      let cleanStart = clean(this.start);
-      let cleanEnd = clean(this.end);
-      let hoverStart = clean(this.hoverStart);
-      let hoverEnd = clean(this.hoverEnd);
+    dayClass (date) {
+      const dt = date.clone();
+      const cleanDt = clean(dt.clone());
+      const cleanToday = clean(moment());
+      const cleanStart = clean(this.start);
+      const cleanEnd = clean(this.end);
+      const hoverStart = clean(this.picker.inside__hoverStart);
+      const hoverEnd = clean(this.picker.inside__hoverEnd);
 
       return {
         off: dt.month() !== this.month,
@@ -82,54 +83,54 @@ export default {
         active: cleanDt.isSame(cleanStart) || cleanDt.isSame(cleanEnd),
         //  start <= dt <= end || hoverStart <= dt <= hoverEnd
         // 当第一次点击(确认了 start )之后，此时 endDate === startDate，鼠标 hover 和 click 都需要显示一个范围
-        "in-range":
+        'in-range':
           (dt >= cleanStart && dt <= cleanEnd) ||
           (dt >= hoverStart && dt <= hoverEnd),
-        "start-date": cleanDt.isSame(cleanStart),
-        "end-date": cleanDt.isSame(cleanEnd),
+        'start-date': cleanDt.isSame(cleanStart),
+        'end-date': cleanDt.isSame(cleanEnd),
       };
-    }
+    },
   },
   computed: {
-    arrowLeftClass() {
-      return "fa fa-chevron-left glyphicon glyphicon-chevron-left";
+    arrowLeftClass () {
+      return 'fa fa-chevron-left glyphicon glyphicon-chevron-left';
     },
-    arrowRightClass() {
-      return "fa fa-chevron-right glyphicon glyphicon-chevron-right";
+    arrowRightClass () {
+      return 'fa fa-chevron-right glyphicon glyphicon-chevron-right';
     },
     // { Number } the month value for current calendar
-    month() {
+    month () {
       return this.calendarMonth.month();
     },
     // TODO 这种有有依赖关系的 computed 是怎么处理的？
-    monthName() {
+    monthName () {
       return this.locale.monthNames[this.month];
     },
-    year() {
+    year () {
       return this.calendarMonth.year();
     },
     /**
      * TODO 这是一个数组，computed 数组的值 变化的时候，template 是怎么知道更新的呢
      */
-    calendar() {
+    calendar () {
       // Build the matrix of dates that will populate the calendar
 
       const calendarMonth = this.calendarMonth;
-      let month = calendarMonth.month();
-      let year = calendarMonth.year();
-      let hour = calendarMonth.hour();
-      let minute = calendarMonth.minute();
-      let second = calendarMonth.second();
-      let daysInMonth = moment([year, month]).daysInMonth();
-      let firstDay = moment([year, month, 1]);
-      let lastDay = moment([year, month, daysInMonth]);
-      let lastMonth = moment(firstDay).subtract(1, 'month').month();
-      let lastYear = moment(firstDay).subtract(1, 'month').year();
-      let daysInLastMonth = moment([lastYear, lastMonth]).daysInMonth();
-      let dayOfWeek = firstDay.day();
+      const month = calendarMonth.month();
+      const year = calendarMonth.year();
+      const hour = calendarMonth.hour();
+      const minute = calendarMonth.minute();
+      const second = calendarMonth.second();
+      const daysInMonth = moment([year, month]).daysInMonth();
+      const firstDay = moment([year, month, 1]);
+      const lastDay = moment([year, month, daysInMonth]);
+      const lastMonth = moment(firstDay).subtract(1, 'month').month();
+      const lastYear = moment(firstDay).subtract(1, 'month').year();
+      const daysInLastMonth = moment([lastYear, lastMonth]).daysInMonth();
+      const dayOfWeek = firstDay.day();
 
       // initialize a 6 rows x 7 columns array for the calendar
-      let calendar = [];
+      const calendar = [];
       calendar.firstDay = firstDay;
       calendar.lastDay = lastDay;
 
@@ -142,18 +143,17 @@ export default {
       let startDay = daysInLastMonth - dayOfWeek + this.locale.firstDay + 1;
        // 2015-02-01，该月第一天是周日，此时 startDay > daysInLastMonth
       // https://user-images.githubusercontent.com/12668546/51437731-43104280-1cdd-11e9-82ae-9c270144b2a9.png
-      if (startDay > daysInLastMonth) { startDay -= 7 }
-      if (dayOfWeek === this.locale.firstDay) { startDay = daysInLastMonth - 6 }
+      if (startDay > daysInLastMonth) { startDay -= 7; }
+      if (dayOfWeek === this.locale.firstDay) { startDay = daysInLastMonth - 6; }
 
       let curDate = moment([lastYear, lastMonth, startDay, 12, minute, second]);
 
-      let col, row;
       for (let i = 0, col = 0, row = 0; i < 42; i++, col++, curDate = moment(curDate).add(24, 'hour')) {
         if (i > 0 && col % 7 === 0) {
           col = 0;
-          row++
+          row++;
         }
-        calendar[row][col] = curDate.clone().hour(hour).minute(minute).second(second)
+        calendar[row][col] = curDate.clone().hour(hour).minute(minute).second(second);
         curDate.hour(12);
 
         // check for minDate and maxDate
@@ -180,10 +180,10 @@ export default {
       return range(minYear, maxYear, 1);
     },
     activeYear: {
-      get() {
+      get () {
         return this.calendarMonth.year();
       },
-      set(newYear) {
+      set (newYear) {
         const calendarMonth = moment([newYear, this.month]);
         this.$emit('clickYearSelect', {
           location: this.location,
@@ -193,10 +193,10 @@ export default {
     },
   },
   filters: {
-    dateNum(value) {
+    dateNum (value) {
       return value.date();
-    }
-  }
+    },
+  },
 };
 </script>
 

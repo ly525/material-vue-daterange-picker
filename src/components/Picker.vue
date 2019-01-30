@@ -56,46 +56,46 @@
 </template>
 
 <script>
-import moment from "moment";
-import Calendar from "./Calendar.vue";
-import CalendarRanges from "./Ranges.vue";
-import clickoutside from "../directives/clickoutside";
+import moment from 'moment';
+import Calendar from './Calendar.vue';
+import CalendarRanges from './Ranges.vue';
+import clickoutside from '../directives/clickoutside';
 
 import { defaultPresets } from '../constant/index.js';
 
 export default {
-  name: "v-md-date-range-picker",
+  name: 'v-md-date-range-picker',
   components: { Calendar, CalendarRanges },
   directives: { clickoutside },
   provide () {
     return {
-      'picker': this
-    }
+      'picker': this,
+    };
   },
   props: {
     // The beginning date of the initially selected date range.
     // If you provide a string, it must match the date format string set in your locale setting
     startDate: {
       type: String,
-      default: moment().format('YYYY-MM-DD')
+      default: moment().format('YYYY-MM-DD'),
     },
     // The end date of the initially selected date range.
     endDate: {
       type: String,
-      default: moment().format('YYYY-MM-DD')
+      default: moment().format('YYYY-MM-DD'),
     },
     // Set predefined date ranges the user can select from.
     // The range of each object an array with two dates representing the bounds of the range.
     presets: {
       type: Array,
-      default() {
+      default () {
         return defaultPresets;
       },
     },
     // Whether the picker appears aligned to the left, to the right, or centered under the HTML element it's attached to.
     opens: {
       type: String,
-      default: "left"
+      default: 'left',
     },
     // Displays "Custom Range" at the end of the list of predefined ranges, when the ranges option is used.
     // This option will be highlighted whenever the current date range selection does not match one of the predefined ranges.
@@ -120,20 +120,20 @@ export default {
       default: moment().add(100, 'year').format('YYYY'),
     },
   },
-  data() {
-    let data = {
+  data () {
+    const data = {
       locale: {
-        direction: "ltr",
-        format: moment.localeData().longDateFormat("L"),
-        separator: " - ",
-        applyLabel: "Apply",
-        cancelLabel: "Cancel",
-        weekLabel: "W",
-        customRangeLabel: "Custom Range",
+        direction: 'ltr',
+        format: moment.localeData().longDateFormat('L'),
+        separator: ' - ',
+        applyLabel: 'Apply',
+        cancelLabel: 'Cancel',
+        weekLabel: 'W',
+        customRangeLabel: 'Custom Range',
         daysOfWeek: moment.weekdaysMin(),
         monthNames: moment.monthsShort(),
-        firstDay: moment.localeData().firstDayOfWeek()
-      }
+        firstDay: moment.localeData().firstDayOfWeek(),
+      },
     };
     // TODO 这里的 props 究竟是放在 data 里面进行初始化好，还是放在生命周期中好呢？
     // https://github.com/ly525/blog/issues/252
@@ -158,38 +158,38 @@ export default {
     return data;
   },
   methods: {
-    clickYearSelect({location, calendarMonth}) {
+    clickYearSelect ({ location, calendarMonth }) {
       this[`inside__${location}CalendarMonth`] = calendarMonth.clone();
     },
-    clickNextMonth() {
+    clickNextMonth () {
       // TODO 如果有 linkedCalendars，需要更新代码
       // moment.js 的 add 和 sub tract 的改变自身的行为没有被 watch 到，原因是什么呢？
       this.inside__leftCalendarMonth = this.inside__leftCalendarMonth.clone().add(1, 'month');
     },
-    clickPrevMonth() {
+    clickPrevMonth () {
       // TODO 如果有 linkedCalendars，需要更新代码
-      this.inside__leftCalendarMonth = this.inside__leftCalendarMonth.clone().subtract(1, 'month')
+      this.inside__leftCalendarMonth = this.inside__leftCalendarMonth.clone().subtract(1, 'month');
     },
     /**
      * TODO type of value
      */
-    dateClick(value) {
+    dateClick (value) {
       if (this.in_selection) {
         // second click action(第二次点击)
         this.in_selection = false;
         // if second click value is smaller than first, which means user clicked a previous date,
         // so set the smaller date as start date, bigger one as end date
         if (value.isBefore(this.inside__start)) {
-          this.inside__hoverEnd = this.inside__end = this.inside__start;
-          this.inside__hoverStart = this.inside__start = value.clone();
+          this.inside__end = this.inside__start;
+          this.inside__start = value.clone();
         } else {
-          this.inside__hoverEnd = this.inside__end = value.clone();
+          this.inside__end = value.clone();
         }
       } else {
         // first click action, set value as start and end(第一次点击, 设置起始值皆为点击的值)
         this.in_selection = true;
-        this.inside__hoverStart = this.inside__start = value.clone();
-        this.inside__hoverEnd = this.inside__end = value.clone();
+        this.inside__start = value.clone();
+        this.inside__end = value.clone();
         // Notice: If you watch inside__start, its callback function will be executed after inside__end is assigned, which is exactly what we want.
         // You can add a loop to test here
         // In fact, the callback function is actually updateMonthCalendar, which is to update the date based on the values of start and end.
@@ -197,7 +197,7 @@ export default {
         // updateMonthCalendar() === callback function for watch inside__start
       }
     },
-    hoverDate(value) {
+    hoverDate (value) {
       if (this.in_selection) {
         if (value > this.inside__start) {
           // 参见：https://github.com/ly525/blog/issues/254
@@ -209,33 +209,33 @@ export default {
         }
       }
     },
-    togglePicker() {
+    togglePicker () {
       this.open = !this.open;
     },
-    pickerStyles() {
+    pickerStyles () {
       return {
-        "show-calendar": this.open,
-        "opens-arrow-pos-right": this.opens == "right",
-        "opens-arrow-pos-left": this.opens == "left",
-        "opens-arrow-pos-center": this.opens == "center",
+        'show-calendar': this.open,
+        'opens-arrow-pos-right': this.opens === 'right',
+        'opens-arrow-pos-left': this.opens === 'left',
+        'opens-arrow-pos-center': this.opens === 'center',
       };
     },
-    clickedApply() {
+    clickedApply () {
       this.open = false;
       // this.$emit('update', { startDate: this.inside__start, endDate: this.inside__end })
     },
-    clickPreset(preset) {
+    clickPreset (preset) {
       if (preset.label === this.locale.customRangeLabel) return;
       const [start, end] = preset.range;
-      this.inside__hoverStart = this.inside__start = moment(start);
-      this.inside__hoverEnd = this.inside__end = moment(end);
-    }
+      this.inside__start = moment(start);
+      this.inside__end = moment(end);
+    },
   },
   computed: {
-    startText() {
+    startText () {
       return this.inside__start.format(this.locale.format);
     },
-    endText() {
+    endText () {
       return this.inside__end.format(this.locale.format);
     },
   },
@@ -249,31 +249,36 @@ export default {
      * TODO 值变化的时候，什么时候执行 watch 呢？ nextTick 吗？
      */
     inside__start (value) {
+      this.inside__hoverStart = value.clone();
       // inspired by https://github.com/dangrossman/daterangepicker/blob/master/daterangepicker.js#L554
       // fix #43
       if (value.month() === this.inside__end.month()) return;
       this.inside__leftCalendarMonth = value.clone();
     },
+    inside__end (value) {
+      // if (value.isSame(this.inside__hoverEnd)) return;
+      this.inside__hoverEnd = value.clone();
+    },
     inside__leftCalendarMonth: {
-      handler(leftMonth) {
+      handler (leftMonth) {
         this.inside__rightCalendarMonth = leftMonth.clone().add(1, 'month');
       },
       immediate: true,
     },
-    startDate(value) {
+    startDate (value) {
       this.inside__start = moment(value);
     },
-    endDate(value) {
+    endDate (value) {
       this.inside__end = moment(value);
       // TODO not linked calendar
     },
-    start(value) {
-      this.$emit("update", { startDate: this.inside__start.clone(), endDate: this.inside__end.clone() });
+    start (value) {
+      this.$emit('update', { startDate: this.inside__start.clone(), endDate: this.inside__end.clone() });
     },
-    end(value) {
-      this.$emit("update", { startDate: this.inside__start.clone(), endDate: this.inside__end.clone()});
-    }
-  }
+    end (value) {
+      this.$emit('update', { startDate: this.inside__start.clone(), endDate: this.inside__end.clone() });
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>

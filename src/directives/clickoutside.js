@@ -1,6 +1,6 @@
 export default {
-  bind(el, binding, vnode) {
-    function documentHandler(e) {
+  bind (el, binding, vnode) {
+    function documentHandler (e) {
       if (el.contains(e.target)) {
         return false;
       }
@@ -9,11 +9,11 @@ export default {
       }
     }
     el.__vueClickOutside__ = documentHandler;
-    document.addEventListener("click", documentHandler, true);
+    document.addEventListener('click', documentHandler, true);
   },
-  update() {},
-  unbind(el, binding) {
-    document.removeEventListener("click", el.__vueClickOutside__, true);
+  update () {},
+  unbind (el, binding) {
+    document.removeEventListener('click', el.__vueClickOutside__, true);
     delete el.__vueClickOutside__;
-  }
+  },
 };

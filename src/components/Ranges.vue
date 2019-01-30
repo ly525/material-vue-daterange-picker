@@ -33,21 +33,21 @@
 <script>
 
 export default {
-  props: ["canSelect", "presets"],
+  props: ['canSelect', 'presets'],
   inject: ['picker'],
   computed: {
-    chosenLabel: function () {
+    chosenLabel () {
       let chosenLabel = '';
       let customRange = true;
       const picker = this.picker;
       const ftm = 'YYYY-MM-DD';
-      for (let preset of this.presets) {
+      for (const preset of this.presets) {
         const [start, end] = preset.range;
-        //ignore times when comparing dates if time picker is not enabled
+        // ignore times when comparing dates if time picker is not enabled
         if (picker.inside__start.format(ftm) === start.format(ftm) && picker.inside__end.format(ftm) === end.format(ftm)) {
-            customRange = false;
-            chosenLabel = preset.label;
-            break;
+          customRange = false;
+          chosenLabel = preset.label;
+          break;
         }
       }
 
@@ -61,7 +61,6 @@ export default {
       return chosenLabel;
     },
     inside__presets () {
-      const presets = this.preset;
       if (this.picker.showCustomRangeLabel) {
         return [
           ...this.presets,
@@ -73,7 +72,7 @@ export default {
       }
       return this.presets;
     },
-  }
+  },
 };
 </script>
 

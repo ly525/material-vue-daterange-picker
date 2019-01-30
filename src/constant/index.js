@@ -6,7 +6,7 @@ import moment from 'moment';
  * @param { Number } endOffset end date 偏移
  * @param { Number } period 时间维度：day or month
  */
-function getRange (startOffset=0, endOffset=0, period='day') {
+function getRange (startOffset = 0, endOffset = 0, period = 'day') {
   return [
     moment().subtract(startOffset, period).startOf(period),
     moment().subtract(endOffset, period).endOf(period),
@@ -38,4 +38,4 @@ export const defaultPresets = [
     label: 'Last Month',
     range: getRange(1, 1, 'month'),
   },
-]
+];
