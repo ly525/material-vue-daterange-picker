@@ -13,6 +13,7 @@
 |showYearSelect|Show year select boxes above calendars to jump to a specific year.|`Boolean`|`false`|false|
 |minYear|The minimum year shown in the dropdowns when showYearSelect is set to true.|`String`|`false`|currentYear -100 |
 |maxYear|The maximum year shown in the dropdowns when showYearSelect is set to true.|`String`|`false`| currentYear + 100|
+|autoApply|Hide the apply and cancel buttons, and automatically apply a new date range as soon as two dates are clicked.|`Boolean`|`false`| true|
 
 <!-- @vuese:VMdDateRangePicker:props:end -->
 
@@ -22,7 +23,7 @@
 <!-- @vuese:VMdDateRangePicker:events:start -->
 |Event Name|Description|Parameters|
 |---|---|---|
-|update|-|-|
+|change|-|-|
 
 <!-- @vuese:VMdDateRangePicker:events:end -->
 

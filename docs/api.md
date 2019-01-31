@@ -37,6 +37,10 @@ If you provide a Desc: string, it must match the date format string set in your 
 > Default: currentYear - 100<br>
 > Description: The minimum year shown in the dropdowns when showYearSelect is set to true
 
+<span style="color:#3eaf7c">autoApply</span> `Boolean`
+> Default: true<br>
+> Description: Hide the apply and cancel buttons, and automatically apply a new date range as soon as two dates are clicked.
+
 <!-- @vuese:VMdDateRangePicker:props:end -->
 
 
@@ -45,7 +49,7 @@ If you provide a Desc: string, it must match the date format string set in your 
 <!-- @vuese:VMdDateRangePicker:events:start -->
 |Event Name|Description|Parameters|
 |---|---|---|
-|update|-|-|
+|change|-|-|
 
 <!-- @vuese:VMdDateRangePicker:events:end -->
 
