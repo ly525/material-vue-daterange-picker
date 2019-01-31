@@ -2,7 +2,7 @@
   <table class="calendar-table">
     <thead>
       <tr>
-        <th class="prev available" @click="$emit('clickPrevMonth')">
+        <th class="prev available v-drp__css-icon-wrapper" @click="$emit('clickPrevMonth')">
           <i :class="[arrowLeftClass]"></i>
         </th>
         <th colspan="5" class="month">
@@ -14,7 +14,7 @@
           <span v-else>{{ activeYear }}</span>
           <!-- select year end -->
         </th>
-        <th class="next available" @click="$emit('clickNextMonth')">
+        <th class="next available v-drp__css-icon-wrapper" @click="$emit('clickNextMonth')">
           <i :class="[arrowRightClass]"></i>
         </th>
       </tr>
@@ -93,10 +93,10 @@ export default {
   },
   computed: {
     arrowLeftClass () {
-      return 'fa fa-chevron-left glyphicon glyphicon-chevron-left';
+      return 'arrow-left v-drp__css-icon';
     },
     arrowRightClass () {
-      return 'fa fa-chevron-right glyphicon glyphicon-chevron-right';
+      return 'arrow-right v-drp__css-icon';
     },
     // { Number } the month value for current calendar
     month () {

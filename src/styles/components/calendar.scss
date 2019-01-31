@@ -70,3 +70,36 @@ td {
     color: #999;
   }
 }
+
+// TODO need refactor by scss mixin
+.v-drp__css-icon-wrapper {
+  position: relative;
+
+  .v-drp__css-icon {
+
+    &.arrow-left:before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 8px;
+      width: 7px;
+      height: 7px;
+      border-top: solid 2px currentColor;
+      border-right: solid 2px currentColor;
+      transform: rotate(-135deg);
+    }
+
+    &.arrow-right:before {
+      content: '';
+      position: absolute;
+      right: 50%;
+      top: 8px;
+      width: 7px;
+      height: 7px;
+      border-top: solid 2px currentColor;
+      border-right: solid 2px currentColor;
+      transform: rotate(45deg);
+    }
+  }
+
+}
