@@ -222,7 +222,7 @@ export default {
     },
     clickedApply () {
       this.open = false;
-      // this.$emit('update', { startDate: this.inside__start, endDate: this.inside__end })
+      this.emitChange();
     },
     clickPreset (preset) {
       if (preset.label === this.locale.customRangeLabel) return;
@@ -233,6 +233,11 @@ export default {
       this.inside__leftCalendarMonth = moment(start);
       // TODO 需要想一下，联动情况下，快捷日期，选择范围如果超过两个月，该如何显示？
       // TODO if linkedCalendar, what should the UI show if end - start > 60 days?
+    },
+    emitChange () {
+      const start = this.inside__start.clone();
+      const end = this.inside__end.clone();
+      this.$emit('change', [start, end], [start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD')]);
     },
   },
   computed: {
@@ -260,7 +265,6 @@ export default {
       this.inside__leftCalendarMonth = value.clone();
     },
     inside__end (value) {
-      // if (value.isSame(this.inside__hoverEnd)) return;
       this.inside__hoverEnd = value.clone();
     },
     inside__leftCalendarMonth: {
@@ -275,12 +279,6 @@ export default {
     endDate (value) {
       this.inside__end = moment(value);
       // TODO not linked calendar
-    },
-    start (value) {
-      this.$emit('update', { startDate: this.inside__start.clone(), endDate: this.inside__end.clone() });
-    },
-    end (value) {
-      this.$emit('update', { startDate: this.inside__start.clone(), endDate: this.inside__end.clone() });
     },
   },
 };
