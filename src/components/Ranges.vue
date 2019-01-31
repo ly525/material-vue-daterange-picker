@@ -10,7 +10,8 @@
         {{ item.label }}
       </li>
     </ul>
-    <div class="action-buttons">
+    <!-- feature #49 -->
+    <div class="action-buttons" v-if="!picker.autoApply">
       <button
         class="btn btn-sm btn-success"
         :disabled="canSelect"

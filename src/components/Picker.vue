@@ -119,6 +119,11 @@ export default {
       type: String,
       default: moment().add(100, 'year').format('YYYY'),
     },
+    // Hide the apply and cancel buttons, and automatically apply a new date range as soon as two dates are clicked.
+    autoApply: {
+      type: Boolean,
+      default: true,
+    },
   },
   data () {
     const data = {
@@ -185,6 +190,11 @@ export default {
         } else {
           this.inside__end = value.clone();
         }
+
+        // feature #49
+        if (this.autoApply) {
+          this.clickedApply();
+        }
       } else {
         // first click action, set value as start and end(第一次点击, 设置起始值皆为点击的值)
         this.in_selection = true;
@@ -233,6 +243,11 @@ export default {
       this.inside__leftCalendarMonth = moment(start);
       // TODO 需要想一下，联动情况下，快捷日期，选择范围如果超过两个月，该如何显示？
       // TODO if linkedCalendar, what should the UI show if end - start > 60 days?
+
+      // feature #49
+      if (this.autoApply) {
+        this.clickedApply();
+      }
     },
     emitChange () {
       const start = this.inside__start.clone();
