@@ -1,12 +1,11 @@
-table {
+table.calendar-table {
   width: 100%;
   margin: 0;
   border-spacing: 0;
   // ??? border-collapse
   border-collapse: collapse;
-}
 
-table {
+  // TODO add renderCalendarCell function for API to custom the calendar cell style
   td,
   th {
     white-space: nowrap;
@@ -22,52 +21,53 @@ table {
     white-space: nowrap;
     cursor: pointer;
   }
-}
-td {
-  &:hover {
-    background-color: #eee;
-    border-color: transparent;
-    color: inherit;
-  }
-  &.today {
-    font-weight: bold;
-  }
 
-  // items between start and end
-  &.in-range {
-    background-color: #ebf4f8;
-    border-color: transparent;
-    color: #000;
-    border-radius: 0;
-  }
-
-  // 选中项 (active item)
-  // TODO 开放 API，允许用户自定义 active 的样式，如何做 ？
-  // TODO give an API for user to custom active class
-  &.active,
-  &.active:hover {
-    background-color: #357ebd;
-    border-color: transparent;
-    color: #fff;
-
-    &.start-date {
-      border-radius: 4px 0 0 0;
+  td {
+    &:hover {
+      background-color: #eee;
+      border-color: transparent;
+      color: inherit;
+    }
+    &.today {
+      font-weight: bold;
     }
 
-    &.end-date {
-      border-radius: 0 0 4px 0;
+    // items between start and end
+    &.in-range {
+      background-color: #ebf4f8;
+      border-color: transparent;
+      color: #000;
+      border-radius: 0;
     }
-  }
 
-  // Items that do not belong to the current month（不在当前月份 Calendar 的 item）
-  // see more: https://github.com/ly525/v-md-date-range-picker/wiki/styles#dayoff
-  &.off,
-  &.off.in-range,
-  &.off.start-date,
-  &.off.end-date {
-    background-color: #fff;
-    border-color: transparent;
-    color: #999;
+    // 选中项 (active item)
+    // TODO 开放 API，允许用户自定义 active 的样式，如何做 ？
+    // TODO give an API for user to custom active class
+    &.active,
+    &.active:hover {
+      background-color: #357ebd;
+      border-color: transparent;
+      color: #fff;
+
+      &.start-date {
+        border-radius: 4px 0 0 0;
+      }
+
+      &.end-date {
+        border-radius: 0 0 4px 0;
+      }
+    }
+
+    // Items that do not belong to the current month（不在当前月份 Calendar 的 item）
+    // see more: https://github.com/ly525/v-md-date-range-picker/wiki/styles#dayoff
+    &.off,
+    &.off.in-range,
+    &.off.start-date,
+    &.off.end-date {
+      background-color: #fff;
+      border-color: transparent;
+      color: #999;
+    }
   }
 }
 

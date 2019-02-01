@@ -1,0 +1,64 @@
+.md-date-range-picker__activator .activator-wrapper {
+  position:relative;
+
+  .text-field 				{
+    display: block;
+    font-size: 18px;
+    padding: 4px 10px 10px 5px;
+    width: 300px;
+    border: none;
+    border-bottom: 1px solid #757575;
+
+    &:focus { outline: none; }
+  }
+
+  /* label */
+  label 				 {
+    color:#999;
+    font-size:14px;
+    font-weight: normal;
+    position: absolute;
+    pointer-events: none;
+    left: 5px;
+    top: 10px;
+    transition: 0.2s ease all;
+  }
+
+  /* active state
+   * use the class if the input value is not empty with javascript trim function
+   * https://stackoverflow.com/questions/8639282/notempty-css-selector-is-not-working
+   */
+  .text-field__filled ~ label,
+  .text-field:focus ~ label {
+    top: -20px;
+    font-size: 14px;
+    color: #1976d2;
+  }
+
+  /* bottom bars */
+  .bar 	{
+    position: relative;
+    display: block;
+    width: 315px;
+
+    &:before,
+    &:after {
+      content: '';
+      height: 2px;
+      width: 0;
+      bottom: 1px;
+      position: absolute;
+      background: #1976d2;
+      transition: 0.2s ease all;
+    }
+
+    &:before { left: 50%; }
+    &:after { right: 50%; }
+  }
+
+  /* active state */
+  .text-field:focus ~ .bar:before,
+  .text-field:focus ~ .bar:after {
+    width: 50%;
+  }
+}

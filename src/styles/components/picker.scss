@@ -62,7 +62,7 @@
   $reverse-direction: if($direction == left, right, left);
 
   &.opens-arrow-pos-#{$direction} {
-    top: 35px;
+    top: 40px;
     @if $direction != center {
       #{$direction}: 10px;
       // 这边的 auto 做了什么？
@@ -93,39 +93,7 @@
 /* gs-date-range-picker-container */
 .md-date-range-picker {
   position: relative;
-
-  &__activator {
-    color: #7e848c;
-    display: inline-block;
-    width: 100%;
-    background: #fff;
-    cursor: pointer;
-    border: 1px solid #7e848c;
-    border-radius: 5px;
-    line-height: 35px;
-    padding: 0 20px 0 10px;
-    box-sizing: border-box;
-  }
 }
-
-// .caret {
-//   border: none;
-//   height: 34px;
-//   display: inline-block;
-//   position: absolute;
-//   top: 0;
-//   right: 0;
-// }
-
-// .caret::after {
-//   content: "\F107";
-//   font-family: FontAwesome;
-//   position: absolute;
-//   right: 10px;
-//   top: 50%;
-//   -webkit-transform: translateY(-50%);
-//   transform: translateY(-50%);
-// }
 
 $prefix-class: daterangepicker;
 

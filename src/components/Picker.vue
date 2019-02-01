@@ -2,9 +2,7 @@
   <div class="md-date-range-picker" v-clickoutside="clickedApply">
     <div class="md-date-range-picker__activator" @click="togglePicker">
       <slot name="input">
-        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
-        <span>{{ startText }} - {{ endText }}</span>
-        <!-- <b class="caret"></b> -->
+        <default-activator :value="`${startText} - ${endText}`" readonly />
       </slot>
     </div>
     <transition name="slide-fade" mode="out-in">
@@ -59,13 +57,15 @@
 import moment from 'moment';
 import Calendar from './Calendar.vue';
 import CalendarRanges from './Ranges.vue';
+import DefaultActivator from './widgets/activator.vue';
+
 import clickoutside from '../directives/clickoutside';
 
 import { defaultPresets } from '../constant/index.js';
 
 export default {
   name: 'v-md-date-range-picker',
-  components: { Calendar, CalendarRanges },
+  components: { Calendar, CalendarRanges, DefaultActivator, },
   directives: { clickoutside },
   provide () {
     return {
@@ -121,6 +121,16 @@ export default {
     },
     // Hide the apply and cancel buttons, and automatically apply a new date range as soon as two dates are clicked.
     autoApply: {
+      type: Boolean,
+      default: true,
+    },
+    // show label for the default activator (inputbox)
+    showActivatorLabel: {
+      type: Boolean,
+      default: true,
+    },
+    // show animation bar for the default activator (inputbox)
+    showActivatorBar: {
       type: Boolean,
       default: true,
     },
