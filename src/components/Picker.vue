@@ -1,5 +1,5 @@
 <template>
-  <div class="md-date-range-picker" v-clickoutside="clickedApply">
+  <div class="md-date-range-picker" v-clickoutside="clickOutside">
     <div class="md-date-range-picker__activator" @click="togglePicker">
       <slot name="input">
         <default-activator :value="`${startText} - ${endText}`" readonly />
@@ -203,7 +203,7 @@ export default {
 
         // feature #49
         if (this.autoApply) {
-          this.clickedApply();
+          this.clickApply();
         }
       } else {
         // first click action, set value as start and end(第一次点击, 设置起始值皆为点击的值)
@@ -264,6 +264,10 @@ export default {
       const end = this.inside__end.clone();
       this.$emit('change', [start, end], [start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD')]);
     },
+    clickOutside () {
+      if (!this.open) return;
+      this.clickedApply();
+    }
   },
   computed: {
     startText () {
