@@ -11,8 +11,8 @@ describe('DateRangePicker', () => {
   it('sets the correct default data', () => {
     const defaultData = DateRangePicker.data();
     expect(typeof DateRangePicker.data).toEqual('function');
-    expect(defaultData.in_selection).toEqual(false);
-    expect(defaultData.open).toEqual(false);
+    expect(defaultData.isFirstClick).toEqual(false);
+    expect(defaultData.pickerVisible).toEqual(false);
   });
 });
 
@@ -30,6 +30,6 @@ describe('DateRangePicker mounted', () => {
 
   it('correctly sets the value when created', () => {
     const data = wrapper.vm.$data;
-    expect(data.inside__start).toEqual(moment(startDate));
+    expect(data.start_).toEqual(moment(startDate));
   });
 });

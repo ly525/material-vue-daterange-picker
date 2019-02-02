@@ -71,8 +71,8 @@ export default {
       const cleanToday = clean(moment());
       const cleanStart = clean(this.start);
       const cleanEnd = clean(this.end);
-      const hoverStart = clean(this.picker.inside__hoverStart);
-      const hoverEnd = clean(this.picker.inside__hoverEnd);
+      const hoverStart = clean(this.picker.hoverStart_);
+      const hoverEnd = clean(this.picker.hoverEnd_);
 
       return {
         off: dt.month() !== this.month,

@@ -9,24 +9,24 @@
       <div
         class="daterangepicker dropdown-menu"
         :class="pickerStyles()"
-        v-show="open"
+        v-show="pickerVisible"
       >
         <calendar-ranges
-          :canSelect="in_selection"
+          :canSelect="isFirstClick"
           :presets="presets"
-          @clickCancel="open = false"
-          @clickApply="clickedApply"
+          @clickCancel="pickerVisible = false"
+          @clickApply="clickApply"
           @clickPreset="clickPreset"
         ></calendar-ranges>
         <calendar
           class="calendar left"
           location="left"
-          :calendar-month="inside__leftCalendarMonth"
+          :calendar-month="leftCalendarMonth_"
           :locale="locale"
-          :start="inside__start"
-          :end="inside__end"
-          :hover-start="inside__hoverStart"
-          :hover-end="inside__hoverEnd"
+          :start="start_"
+          :end="end_"
+          :hover-start="hoverStart_"
+          :hover-end="hoverEnd_"
           @clickNextMonth="clickNextMonth"
           @clickPrevMonth="clickPrevMonth"
           @dateClick="dateClick"
@@ -36,12 +36,12 @@
         <calendar
           class="calendar right"
           location="right"
-          :calendar-month="inside__rightCalendarMonth"
+          :calendar-month="rightCalendarMonth_"
           :locale="locale"
-          :start="inside__start"
-          :end="inside__end"
-          :hover-start="inside__hoverStart"
-          :hover-end="inside__hoverEnd"
+          :start="start_"
+          :end="end_"
+          :hover-start="hoverStart_"
+          :hover-end="hoverEnd_"
           @clickNextMonth="clickNextMonth"
           @clickPrevMonth="clickPrevMonth"
           @dateClick="dateClick"
@@ -153,14 +153,14 @@ export default {
     // TODO 这里的 props 究竟是放在 data 里面进行初始化好，还是放在生命周期中好呢？
     // https://github.com/ly525/blog/issues/252
     // https://github.com/ly525/blog/issues/258
-    data.inside__leftCalendarMonth = moment(this.startDate);
-    data.inside__rightCalendarMonth = moment(this.endDate);
-    data.inside__start = moment(this.startDate);
-    data.inside__end = moment(this.endDate);
-    data.inside__hoverStart = moment(this.startDate);
-    data.inside__hoverEnd = moment(this.endDate);
-    data.in_selection = false; // in_selection means whether user click once, if user click once, set value true
-    data.open = false;
+    data.leftCalendarMonth_ = moment(this.startDate);
+    data.rightCalendarMonth_ = moment(this.endDate);
+    data.start_ = moment(this.startDate);
+    data.end_ = moment(this.endDate);
+    data.hoverStart_ = moment(this.startDate);
+    data.hoverEnd_ = moment(this.endDate);
+    data.isFirstClick = false; // isFirstClick means whether user click once, if user click once, set value true
+    data.pickerVisible = false;
 
     // update day names order to firstDay
     if (data.locale.firstDay !== 0) {
@@ -174,139 +174,139 @@ export default {
   },
   methods: {
     clickYearSelect ({ location, calendarMonth }) {
-      this[`inside__${location}CalendarMonth`] = calendarMonth.clone();
+      this[`${location}CalendarMonth_`] = calendarMonth.clone();
     },
     clickNextMonth () {
       // TODO 如果有 linkedCalendars，需要更新代码
       // moment.js 的 add 和 sub tract 的改变自身的行为没有被 watch 到，原因是什么呢？
-      this.inside__leftCalendarMonth = this.inside__leftCalendarMonth.clone().add(1, 'month');
+      this.leftCalendarMonth_ = this.leftCalendarMonth_.clone().add(1, 'month');
     },
     clickPrevMonth () {
       // TODO 如果有 linkedCalendars，需要更新代码
-      this.inside__leftCalendarMonth = this.inside__leftCalendarMonth.clone().subtract(1, 'month');
+      this.leftCalendarMonth_ = this.leftCalendarMonth_.clone().subtract(1, 'month');
     },
     /**
      * TODO type of value
      */
     dateClick (value) {
-      if (this.in_selection) {
+      if (this.isFirstClick) { // first click
         // second click action(第二次点击)
-        this.in_selection = false;
+        this.isFirstClick = false;
         // if second click value is smaller than first, which means user clicked a previous date,
         // so set the smaller date as start date, bigger one as end date
-        if (value.isBefore(this.inside__start)) {
-          this.inside__end = this.inside__start;
-          this.inside__start = value.clone();
+        if (value.isBefore(this.start_)) {
+          this.end_ = this.start_;
+          this.start_ = value.clone();
         } else {
-          this.inside__end = value.clone();
+          this.end_ = value.clone();
         }
 
         // feature #49
         if (this.autoApply) {
           this.clickApply();
         }
-      } else {
+      } else { // second click
         // first click action, set value as start and end(第一次点击, 设置起始值皆为点击的值)
-        this.in_selection = true;
-        this.inside__start = value.clone();
-        this.inside__end = value.clone();
-        // Notice: If you watch inside__start, its callback function will be executed after inside__end is assigned, which is exactly what we want.
+        this.isFirstClick = true;
+        this.start_ = value.clone();
+        this.end_ = value.clone();
+        // Notice: If you watch start_, its callback function will be executed after end_ is assigned, which is exactly what we want.
         // You can add a loop to test here
         // In fact, the callback function is actually updateMonthCalendar, which is to update the date based on the values of start and end.
-        // So if the callback is callback after both the inside__start and inside__end, that's right!
-        // updateMonthCalendar() === callback function for watch inside__start
+        // So if the callback is callback after both the start_ and end_, that's right!
+        // updateMonthCalendar() === callback function for watch start_
       }
     },
     hoverDate (value) {
-      if (this.in_selection) {
-        if (value > this.inside__start) {
+      if (this.isFirstClick) {
+        if (value > this.start_) {
           // 参见：https://github.com/ly525/blog/issues/254
-          this.inside__hoverStart = this.inside__start.clone();
-          this.inside__hoverEnd = value.clone();
+          this.hoverStart_ = this.start_.clone();
+          this.hoverEnd_ = value.clone();
         } else {
-          this.inside__hoverEnd = this.inside__start.clone();
-          this.inside__hoverStart = value.clone();
+          this.hoverEnd_ = this.start_.clone();
+          this.hoverStart_ = value.clone();
         }
       }
     },
     togglePicker () {
-      this.open = !this.open;
+      this.pickerVisible = !this.pickerVisible;
     },
     pickerStyles () {
       return {
-        'show-calendar': this.open,
+        'show-calendar': this.pickerVisible,
         'opens-arrow-pos-right': this.opens === 'right',
         'opens-arrow-pos-left': this.opens === 'left',
         'opens-arrow-pos-center': this.opens === 'center',
       };
     },
-    clickedApply () {
-      this.open = false;
+    clickApply () {
+      this.pickerVisible = false;
       this.emitChange();
     },
     clickPreset (preset) {
       if (preset.label === this.locale.customRangeLabel) return;
       const [start, end] = preset.range;
-      this.inside__start = moment(start);
-      this.inside__end = moment(end);
+      this.start_ = moment(start);
+      this.end_ = moment(end);
       // fix #47
-      this.inside__leftCalendarMonth = moment(start);
+      this.leftCalendarMonth_ = moment(start);
       // TODO 需要想一下，联动情况下，快捷日期，选择范围如果超过两个月，该如何显示？
       // TODO if linkedCalendar, what should the UI show if end - start > 60 days?
 
       // feature #49
       if (this.autoApply) {
-        this.clickedApply();
+        this.clickApply();
       }
     },
     emitChange () {
-      const start = this.inside__start.clone();
-      const end = this.inside__end.clone();
+      const start = this.start_.clone();
+      const end = this.end_.clone();
       this.$emit('change', [start, end], [start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD')]);
     },
     clickOutside () {
-      if (!this.open) return;
-      this.clickedApply();
+      if (!this.pickerVisible) return;
+      this.clickApply();
     }
   },
   computed: {
     startText () {
-      return this.inside__start.format(this.locale.format);
+      return this.start_.format(this.locale.format);
     },
     endText () {
-      return this.inside__end.format(this.locale.format);
+      return this.end_.format(this.locale.format);
     },
   },
   watch: {
     /**
      * 有两个地方：
-     * 1. 点击左侧快捷键(clickPreset)，确认 inside__start
+     * 1. 点击左侧快捷键(clickPreset)，确认 start_
      * 2.
      *
      * 如果使用 计算属性，则 clickPrevMonth 和 clickNextMonth 的时候，需要设置计算属性的 setter，但这时候 setter 就不知道写什么了
      * TODO 值变化的时候，什么时候执行 watch 呢？ nextTick 吗？
      */
-    inside__start (value) {
-      this.inside__hoverStart = value.clone();
+    start_ (value) {
+      this.hoverStart_ = value.clone();
       // inspired by https://github.com/dangrossman/daterangepicker/blob/master/daterangepicker.js#L554
       // fix #43
-      if (value.month() === this.inside__end.month()) return;
-      this.inside__leftCalendarMonth = value.clone();
+      if (value.month() === this.end_.month()) return;
+      this.leftCalendarMonth_ = value.clone();
     },
-    inside__end (value) {
-      this.inside__hoverEnd = value.clone();
+    end_ (value) {
+      this.hoverEnd_ = value.clone();
     },
-    inside__leftCalendarMonth: {
+    leftCalendarMonth_: {
       handler (leftMonth) {
-        this.inside__rightCalendarMonth = leftMonth.clone().add(1, 'month');
+        this.rightCalendarMonth_ = leftMonth.clone().add(1, 'month');
       },
       immediate: true,
     },
     startDate (value) {
-      this.inside__start = moment(value);
+      this.start_ = moment(value);
     },
     endDate (value) {
-      this.inside__end = moment(value);
+      this.end_ = moment(value);
       // TODO not linked calendar
     },
   },
