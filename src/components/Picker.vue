@@ -159,6 +159,9 @@ export default {
     data.end_ = moment(this.endDate);
     data.hoverStart_ = moment(this.startDate);
     data.hoverEnd_ = moment(this.endDate);
+
+    data.startText = moment(this.startDate).format(data.locale.format);
+    data.endText = moment(this.endDate).format(data.locale.format);
     data.isFirstClick = false; // isFirstClick means whether user click once, if user click once, set value true
     data.pickerVisible = false;
 
@@ -242,6 +245,7 @@ export default {
     },
     clickApply () {
       this.pickerVisible = false;
+      this.updateTextField();
       this.emitChange();
     },
     clickPreset (preset) {
@@ -259,23 +263,27 @@ export default {
         this.clickApply();
       }
     },
+    /**
+     *
+    */
+    updateTextField () {
+      // do not update the input slot provided content by the parent
+      if (this.$slots.input) return;
+
+      this.startText = this.start_.format(this.locale.format);
+      this.endText = this.end_.format(this.locale.format);
+    },
     emitChange () {
       const start = this.start_.clone();
       const end = this.end_.clone();
       this.$emit('change', [start, end], [start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD')]);
+      // TODO if developer do not set the event listener for @change or @input, we may need change the startText and endText in the component,
+      // TODO support v-model
     },
     clickOutside () {
       if (!this.pickerVisible) return;
       this.clickApply();
     }
-  },
-  computed: {
-    startText () {
-      return this.start_.format(this.locale.format);
-    },
-    endText () {
-      return this.end_.format(this.locale.format);
-    },
   },
   watch: {
     /**
@@ -304,9 +312,11 @@ export default {
     },
     startDate (value) {
       this.start_ = moment(value);
+      this.startText = moment(value).format(this.locale.format);
     },
     endDate (value) {
       this.end_ = moment(value);
+      this.endText = moment(value).format(this.locale.format);
       // TODO not linked calendar
     },
   },
