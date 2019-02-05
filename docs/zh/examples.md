@@ -223,18 +223,15 @@ export default {
 ```html
 <template>
   <div>
-    <div class="select-wrapper">
+    <div class="demo-props-switch-wrapper">
       <span>showCustomRangeLabel: </span>
-      <select v-model="value">
-        <option disabled value="">Please select a item</option>
-        <option value="1">true</option>
-        <option value="0">false</option>
-      </select>
+      <input type="checkbox" id="custom-range-id" v-model="value">
+      <label for="ustom-range-id">{{ value }}</label>
     </div>
     <v-md-date-range-picker
       start-date="2019-01-01"
       end-date="2019-01-02"
-      :show-custom-range-label="+value"
+      :show-custom-range-label="value"
     ></v-md-date-range-picker>
   </div>
 </template>
@@ -245,14 +242,40 @@ export default {
     })
   }
 </script>
-<style>
-.select-wrapper {
-  padding: 20px 0;
-}
-</style>
 ```
 :::
 
+
+#### autoApply
+> Boolean, default is `true`
+
+> 隐藏 apply 和 cancel 按钮，当 start 和 end 都被点击之后，会自动 emit 一个新的 date range
+
+::: demo
+```html
+<template>
+  <div>
+    <div class="demo-props-switch-wrapper">
+      <span>autoApply</span>
+      <input type="checkbox" id="auto-apply-id" v-model="value">
+      <label for="auto-apply-id">{{ value }}</label>
+    </div>
+    <v-md-date-range-picker
+      start-date="2019-01-01"
+      end-date="2019-01-02"
+      :auto-apply="value"
+    ></v-md-date-range-picker>
+  </div>
+</template>
+<script>
+  export default {
+    data: () => ({
+      value: true,
+    })
+  }
+</script>
+```
+:::
 
 
 #### alwaysShowCalendars `TODO`
@@ -269,7 +292,7 @@ TODO:
 ```html
 <template>
   <div>
-    <div class="select-wrapper">
+    <div class="demo-props-switch-wrapper">
       <span>Opens: </span>
       <select v-model="opens">
         <option disabled value="">Please select a item</option>
@@ -292,11 +315,5 @@ export default {
   })
 }
 </script>
-<style>
-.select-wrapper {
-  padding: 20px 0;
-}
-
-</style>
 ```
 :::
