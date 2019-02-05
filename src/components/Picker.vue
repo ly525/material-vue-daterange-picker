@@ -159,6 +159,9 @@ export default {
     data.end_ = moment(this.endDate);
     data.hoverStart_ = moment(this.startDate);
     data.hoverEnd_ = moment(this.endDate);
+    // fix #14
+    data.cloneStart = moment(this.startDate);
+    data.cloneEnd = moment(this.endDate);
 
     data.startText = moment(this.startDate).format(data.locale.format);
     data.endText = moment(this.endDate).format(data.locale.format);
@@ -245,7 +248,19 @@ export default {
     },
     clickApply () {
       this.pickerVisible = false;
+
+      // fix #14
+      // if the use only click the picker only one time,
+      // then close the picker directly(by clickoutside or click the activator)
+      if (this.isFirstClick) {
+        this.isFirstClick = false;
+        this.start_ = this.cloneStart.clone();
+        this.end_ = this.cloneEnd.clone();
+        return;
+      }
+
       this.updateTextField();
+      this.cloneForCancelUsage();
       this.emitChange();
     },
     clickPreset (preset) {
@@ -272,6 +287,20 @@ export default {
 
       this.startText = this.start_.format(this.locale.format);
       this.endText = this.end_.format(this.locale.format);
+    },
+    /**
+     * fix #14
+     * clone start and end for the following scenes, mainly for reseting the selected date to origin state:
+     * 1. (autoApply: false) click start [or both start and end], but click the cancel button
+     * 2. (autoApply: true) just click one time, and then click outside
+     *
+     * TODO (need discussion) maybe we can do this action in watch pickerVisible (from hidden to visible)
+     * DONE we also need to do clone start and end in the watcher of ther related prop
+     *
+     */
+    cloneForCancelUsage () {
+      this.cloneStart = this.start_.clone();
+      this.cloneEnd = this.end_.clone();
     },
     emitChange () {
       const start = this.start_.clone();
@@ -313,10 +342,12 @@ export default {
     startDate (value) {
       this.start_ = moment(value);
       this.startText = moment(value).format(this.locale.format);
+      this.cloneStart = moment(value); // fix #14
     },
     endDate (value) {
       this.end_ = moment(value);
       this.endText = moment(value).format(this.locale.format);
+      this.cloneEnd = moment(value); // fix #14
       // TODO not linked calendar
     },
   },
