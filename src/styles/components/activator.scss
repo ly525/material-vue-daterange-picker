@@ -1,7 +1,8 @@
-.md-date-range-picker__activator {
+// .md-date-range-picker <-> mdrp
+.mdrp__activator {
   display: inline-block;
 }
-.md-date-range-picker__activator .activator-wrapper {
+.mdrp__activator .activator-wrapper {
   position:relative;
 
   .text-field 				{

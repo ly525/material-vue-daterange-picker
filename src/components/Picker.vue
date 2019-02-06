@@ -1,13 +1,13 @@
 <template>
-  <div class="md-date-range-picker" v-clickoutside="clickOutside">
-    <div class="md-date-range-picker__activator" @click="togglePicker">
+  <div class="mdrp-root" v-clickoutside="clickOutside">
+    <div class="mdrp__activator" @click="togglePicker">
       <slot name="input">
         <default-activator ref="defaultActivator" :value="`${startText} - ${endText}`" readonly />
       </slot>
     </div>
     <transition name="slide-fade" mode="out-in">
       <div
-        class="daterangepicker dropdown-menu"
+        class="mdrp__panel dropdown-menu"
         :class="pickerStyles()"
         v-show="pickerVisible"
       >

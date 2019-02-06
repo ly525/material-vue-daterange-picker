@@ -90,13 +90,13 @@
 }
 
 
-/* gs-date-range-picker-container */
-.md-date-range-picker {
+// md-date-range-picker <-> mdrp
+.mdrp-root {
   position: relative;
   display: inline-block;
 }
 
-$prefix-class: daterangepicker;
+$prefix-class: mdrp__panel;
 
 .#{$prefix-class} {
     font-size: 15px;
@@ -165,7 +165,7 @@ $prefix-class: daterangepicker;
 /*  Larger Screen Styling */
 @media (min-width: 564px) {
   // TODO width auto 的使用场景
-  .daterangepicker {
+  .#{$prefix-class} {
     width: auto;
 
     &.show-calendar {
