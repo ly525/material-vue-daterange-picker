@@ -12,7 +12,7 @@
         v-show="pickerVisible"
       >
         <calendar-ranges
-          :canSelect="isFirstClick"
+          :canSelect="inRange"
           :presets="presets"
           @clickCancel="pickerVisible = false"
           @clickApply="clickApply"
@@ -165,7 +165,7 @@ export default {
 
     data.startText = moment(this.startDate).format(data.locale.format);
     data.endText = moment(this.endDate).format(data.locale.format);
-    data.isFirstClick = false; // isFirstClick means whether user click once, if user click once, set value true
+    data.inRange = false; // inRange means whether user click once, if user click once, set value true
     data.pickerVisible = false;
 
     // update day names order to firstDay
@@ -195,9 +195,9 @@ export default {
      * TODO type of value
      */
     dateClick (value) {
-      if (this.isFirstClick) { // first click
+      if (this.inRange) { // second click
         // second click action(第二次点击)
-        this.isFirstClick = false;
+        this.inRange = false;
         // if second click value is smaller than first, which means user clicked a previous date,
         // so set the smaller date as start date, bigger one as end date
         if (value.isBefore(this.start_)) {
@@ -211,9 +211,9 @@ export default {
         if (this.autoApply) {
           this.clickApply();
         }
-      } else { // second click
+      } else { // first click
         // first click action, set value as start and end(第一次点击, 设置起始值皆为点击的值)
-        this.isFirstClick = true;
+        this.inRange = true;
         this.start_ = value.clone();
         this.end_ = value.clone();
         // Notice: If you watch start_, its callback function will be executed after end_ is assigned, which is exactly what we want.
@@ -224,7 +224,7 @@ export default {
       }
     },
     hoverDate (value) {
-      if (this.isFirstClick) {
+      if (this.inRange) {
         if (value > this.start_) {
           // 参见：https://github.com/ly525/blog/issues/254
           this.hoverStart_ = this.start_.clone();
@@ -279,8 +279,8 @@ export default {
       // fix #14
       // if the use only click the picker only one time,
       // then close the picker directly(by clickoutside or click the activator)
-      if (this.isFirstClick) {
-        this.isFirstClick = false;
+      if (this.inRange) {
+        this.inRange = false;
         this.start_ = this.cloneStart.clone();
         this.end_ = this.cloneEnd.clone();
         return;

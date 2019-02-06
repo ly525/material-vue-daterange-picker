@@ -11,7 +11,7 @@ describe('DateRangePicker', () => {
   it('sets the correct default data', () => {
     const defaultData = DateRangePicker.data();
     expect(typeof DateRangePicker.data).toEqual('function');
-    expect(defaultData.isFirstClick).toEqual(false);
+    expect(defaultData.inRange).toEqual(false);
     expect(defaultData.pickerVisible).toEqual(false);
   });
 });
