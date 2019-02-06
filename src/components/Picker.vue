@@ -2,7 +2,7 @@
   <div class="md-date-range-picker" v-clickoutside="clickOutside">
     <div class="md-date-range-picker__activator" @click="togglePicker">
       <slot name="input">
-        <default-activator :value="`${startText} - ${endText}`" readonly />
+        <default-activator ref="defaultActivator" :value="`${startText} - ${endText}`" readonly />
       </slot>
     </div>
     <transition name="slide-fade" mode="out-in">
@@ -236,7 +236,34 @@ export default {
       }
     },
     togglePicker () {
-      this.pickerVisible = !this.pickerVisible;
+      // ---- fix #53 start ----
+      let elm = this.$refs.defaultActivator && this.$refs.defaultActivator.$el;
+      const slotActivator = this.$slots.input && this.$slots.input.length && this.$slots.input[0];
+      if (!elm && (slotActivator.querySelector('input') || slotActivator.querySelector('button'))) {
+        elm = slotActivator;
+      }
+
+      if (elm) {
+        // 1. dont return or do nothing here,
+        // because you need to show the picker panel if the picker panel is hidden(example: user click the activator first time)
+        // but `this.pickerVisible = !this.pickerVisible;` do the samething in this case.
+        // So why set pickerVisible always `true` if elm exist?
+        // 2. [interact]: because if the type of activator is input or button and the picker panel is already visible (pickerVisible === true),
+        // when the user click the activator, the picker panel should keep visible(can not fold the picker panel)
+
+        // Chinese：
+        // 1. 不能在这里 return 或 啥都不做
+        // 因为如果日期选择器是隐藏的，点击了 input 需要显示日期选择器。比如用户第一次点击日期选择器的时候
+        // 但是在这种情况下做，下面的 `this.pickerVisible = !this.pickerVisible;` 做了一样的事
+        // 那么为何需要在 elm 为 true 的时候，总是设置 pickerVisible 为 true 呢？
+        // 2. [交互] 我们约定，当 activator 的类型是 input 或 button，以及 选择器面板已经 打开的情况下，
+        // 当用户点击了 activator 的时候，不收起日期选择器面板
+
+        this.pickerVisible = true;
+      } else {
+        this.pickerVisible = !this.pickerVisible;
+      }
+      // ---- fix #53 start ----
     },
     pickerStyles () {
       return {

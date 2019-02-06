@@ -93,6 +93,7 @@
 /* gs-date-range-picker-container */
 .md-date-range-picker {
   position: relative;
+  display: inline-block;
 }
 
 $prefix-class: daterangepicker;
