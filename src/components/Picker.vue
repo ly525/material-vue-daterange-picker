@@ -65,7 +65,7 @@ import { defaultPresets } from '../constant/index.js';
 
 export default {
   name: 'v-md-date-range-picker',
-  components: { Calendar, CalendarRanges, DefaultActivator, },
+  components: { Calendar, CalendarRanges, DefaultActivator },
   directives: { clickoutside },
   provide () {
     return {
