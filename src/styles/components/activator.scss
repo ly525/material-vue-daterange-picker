@@ -1,3 +1,6 @@
+$labelColor:  #4285f4;
+$barColor:  #4285f4;
+
 // .md-date-range-picker <-> mdrp
 .mdrp__activator {
   display: inline-block;
@@ -36,7 +39,7 @@
   .text-field:focus ~ label {
     top: -20px;
     font-size: 14px;
-    color: #1976d2;
+    color: $labelColor;
   }
 
   /* bottom bars */
@@ -52,7 +55,7 @@
       width: 0;
       bottom: 1px;
       position: absolute;
-      background: #1976d2;
+      background: $barColor;
       transition: 0.2s ease all;
     }
 

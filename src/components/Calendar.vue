@@ -28,12 +28,15 @@
       <tr v-for="(dateRow, rowIndex) in calendar" :key="rowIndex">
         <slot name="date-slot" v-for="(date, dateIndex) in dateRow">
           <td
+            class="calendar-cell"
             :key="dateIndex"
             :class="dayClass(date)"
             @click="$emit('dateClick', date)"
             @mouseover="$emit('hoverDate', date)"
           >
-            {{ date | dateNum }}
+            <div class="calendar-cell__content">
+              {{ date | dateNum }}
+            </div>
           </td>
         </slot>
       </tr>

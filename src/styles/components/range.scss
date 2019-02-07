@@ -1,3 +1,6 @@
+// TODO: open api for developer to custom the active class
+$activeRangeBgColor: #4285f4;
+
 .action-buttons {
   clear: both;
   padding: 8px;
@@ -30,9 +33,13 @@
     }
 
     &.active {
-      background-color: #08c;
-      border: 1px solid #08c;
-      color: #fff;
+      color: $activeRangeBgColor;
+
+      // bootstrap style
+      // background-color: $activeRangeBgColor;
+      // // TODO did I need set border style ??
+      // border: 1px solid $activeRangeBgColor;
+      // color: #fff;
     }
   }
 }
