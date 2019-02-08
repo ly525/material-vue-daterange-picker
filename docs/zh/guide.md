@@ -20,7 +20,7 @@ pageClass: custom-page-class
 <html>
   <head>
     <link rel="stylesheet"
-      href="https://unpkg.com/https://unpkg.com/v-md-date-range-picker/dist/v-md-date-range-picker.css">
+      href="https://unpkg.com/v-md-date-range-picker/dist/v-md-date-range-picker.css">
   </head>
   <body>
     <div id="app">
