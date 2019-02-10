@@ -1,4 +1,4 @@
-[Document](https://ly525.github.io/v-md-date-range-picker/) [中文文档](https://ly525.github.io/v-md-date-range-picker/zh/)
+[Document](https://ly525.github.io/v-md-date-range-picker/) | [中文文档](https://ly525.github.io/v-md-date-range-picker/zh/)
 
 <h1 align="center">
 v-md-date-range-picker
