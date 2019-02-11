@@ -238,7 +238,8 @@ export default {
     togglePicker () {
       // ---- fix #53 start ----
       let elm = this.$refs.defaultActivator && this.$refs.defaultActivator.$el;
-      const slotActivator = this.$slots.input && this.$slots.input.length && this.$slots.input[0];
+      // fix #55: this.$slots.input[0] -> this.$slots.input[0].elm
+      const slotActivator = this.$slots.input && this.$slots.input.length && this.$slots.input[0].elm;
       if (!elm && (slotActivator.querySelector('input') || slotActivator.querySelector('button'))) {
         elm = slotActivator;
       }
@@ -263,7 +264,7 @@ export default {
       } else {
         this.pickerVisible = !this.pickerVisible;
       }
-      // ---- fix #53 start ----
+      // ---- fix #53 end ----
     },
     pickerStyles () {
       return {
