@@ -20,7 +20,7 @@ export const defaultPresets = [
   },
   {
     label: 'Yesterday',
-    range: getRange(1, 0),
+    range: getRange(1, 1),
   },
   {
     label: 'Last 7 Days',
