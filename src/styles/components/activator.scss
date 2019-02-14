@@ -3,7 +3,9 @@ $barColor:  #4285f4;
 
 // .md-date-range-picker <-> mdrp
 .mdrp__activator {
+  width: 100%;
   display: inline-block;
+
 }
 .mdrp__activator .activator-wrapper {
   position:relative;
