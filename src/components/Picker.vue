@@ -12,6 +12,7 @@
         v-show="pickerVisible"
       >
         <calendar-ranges
+          v-if="showPresets && presets"
           :canSelect="inRange"
           :presets="presets"
           @clickCancel="pickerVisible = false"
@@ -131,6 +132,10 @@ export default {
     },
     // show animation bar for the default activator (inputbox)
     showActivatorBar: {
+      type: Boolean,
+      default: true,
+    },
+    showPresets: {
       type: Boolean,
       default: true,
     },

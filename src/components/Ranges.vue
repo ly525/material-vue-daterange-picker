@@ -1,6 +1,6 @@
 <template>
   <div class="ranges">
-    <ul v-if="presets">
+    <ul>
       <li
         v-for="(item, index) in presets_"
         :key="index"
