@@ -59,7 +59,7 @@ module.exports = {
       }
     },
   },
-  base: '/v-md-date-range-picker/',
+  base: '/material-vue-daterange-picker/',
   head: [
     ['script', { src: 'https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js' }],
     // ['script', { src: 'https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js' }],
