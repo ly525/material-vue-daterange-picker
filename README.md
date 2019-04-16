@@ -1,4 +1,4 @@
-[Document](https://ly525.github.io/v-md-date-range-picker/) | [中文文档](https://ly525.github.io/v-md-date-range-picker/zh/)
+[Document](https://ly525.github.io/material-vue-daterange-picker/) | [中文文档](https://ly525.github.io/material-vue-daterange-picker/zh/)
 > If the document is not accessible, please open an [issue](https://github.com/ly525/material-vue-daterange-picker/issues), I will fix it right away.
 
 <h1 align="center">
