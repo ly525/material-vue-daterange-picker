@@ -18,10 +18,6 @@ pageClass: custom-page-class
 
 ```html
 <html>
-  <head>
-    <link rel="stylesheet"
-      href="https://unpkg.com/v-md-date-range-picker/dist/v-md-date-range-picker.css">
-  </head>
   <body>
     <div id="app">
       <v-md-date-range-picker></v-md-date-range-picker>
