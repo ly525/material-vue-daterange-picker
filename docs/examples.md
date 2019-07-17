@@ -329,3 +329,38 @@ export default {
 </script>
 ```
 :::
+
+## Event
+
+### change
+
+::: demo
+```html
+<template>
+  <div>
+    <v-md-date-range-picker
+      :opens="opens"
+      start-date="2019-01-01"
+      end-date="2019-01-02"
+      @change="handleChange"
+    ></v-md-date-range-picker>
+    <div style="margin: 10px">
+      values: {{values}}
+    </div>
+  </div>
+</template>
+<script>
+export default {
+  data: () => ({
+    values: [],
+  }),
+  methods: {
+    handleChange (values) {
+      console.log(values)
+      this.values = values
+    }
+  }
+}
+</script>
+```
+:::
