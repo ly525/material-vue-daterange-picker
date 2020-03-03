@@ -18,14 +18,14 @@
         type="button"
         @click="$emit('clickApply')"
       >
-        Apply
+        {{ applyLabel }}
       </button>
       <button
         class="btn btn-sm btn-default"
         type="button"
         @click="$emit('clickCancel')"
       >
-        Cancel
+        {{ cancelLabel }}
       </button>
     </div>
   </div>
@@ -33,8 +33,30 @@
 
 <script>
 
+import moment from "moment";
+import {defaultPresets} from "../constant";
+
 export default {
-  props: ['canSelect', 'presets'],
+  props: {
+      canSelect: {
+          type: Boolean,
+          default: false,
+      },
+      presets: {
+          type: Array,
+          default () {
+              return [];
+          },
+      },
+      applyLabel: {
+          type: String,
+          default: 'Apply',
+      },
+      cancelLabel: {
+          type: String,
+          default: 'Cancel',
+      },
+  },
   inject: ['picker'],
   computed: {
     chosenLabel () {

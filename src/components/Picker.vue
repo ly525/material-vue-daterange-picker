@@ -15,6 +15,8 @@
           v-if="showPresets && presets"
           :canSelect="inRange"
           :presets="presets"
+          :applyLabel="locale.applyLabel"
+          :cancelLabel="locale.cancelLabel"
           @clickCancel="pickerVisible = false"
           @clickApply="clickApply"
           @clickPreset="clickPreset"
